@@ -163,7 +163,7 @@
         "montage",
         "zoom"
       ],
-      "music": "original",
+      "music": "released",
       "labeled": true,
       "labeling_minutes": 8,
       "notes": [],
@@ -446,7 +446,7 @@
         "zoom",
         "slow-paced"
       ],
-      "music": "original",
+      "music": "released",
       "labeled": true,
       "labeling_minutes": 1,
       "notes": [
@@ -541,7 +541,7 @@
         "flash",
         "zoom"
       ],
-      "music": "original",
+      "music": "released",
       "labeled": false,
       "labeling_minutes": null,
       "notes": [],
@@ -596,7 +596,7 @@
         "zoom",
         "slow-paced"
       ],
-      "music": "original",
+      "music": "released",
       "labeled": false,
       "labeling_minutes": null,
       "notes": [],
