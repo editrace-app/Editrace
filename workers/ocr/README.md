@@ -30,14 +30,14 @@ OCR on one keyframe per shot misses text that changes inside a shot, so the coar
 
 ## Running it
 
-CI installs the CPU build (`paddlepaddle`) through the `ocr` extra. For a GPU, install the GPU build over it. It is
-the same version, so the output is the same, only faster:
+The OCR worker has its own `requirements.txt` instead of an extra in `pyproject.toml`: paddleocr needs numpy below 2.4
+and the cut worker's extra needs 2.4 or newer, so they can't share the root lockfile. CI therefore doesn't install
+Paddle, and `test_paddle.py` skips there. Set up its own environment, and for a GPU install the GPU build of Paddle over
+the CPU one (same version, same output, only faster):
 
 ```sh
-uv sync --extra ocr
-uv pip install paddlepaddle-gpu==3.3.1 \
-  --index-url https://www.paddlepaddle.org.cn/packages/stable/cu126/ \
-  --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match
+uv venv && uv pip install -r workers/ocr/requirements.txt pydantic pytest
+uv pip install paddlepaddle-gpu==3.3.1   --index-url https://www.paddlepaddle.org.cn/packages/stable/cu126/   --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match
 ```
 
 Needs an NVIDIA driver that supports CUDA 12.6 or newer. Measured on an RTX 3060 Ti: 34 s of video in about 37 s,

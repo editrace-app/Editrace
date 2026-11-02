@@ -1,0 +1,14 @@
+# The OCR worker's own dependencies (#13), pinned because detector output can change between releases (ADR 0003).
+# Not an extra in pyproject.toml: paddleocr needs numpy<2.4 and the cut worker's extra needs numpy>=2.4, so the two
+# can't share the root lockfile. Install this in the worker's own environment or Modal image.
+#
+#   uv venv && uv pip install -r workers/ocr/requirements.txt pydantic pytest
+#
+# For a GPU, install the GPU build of Paddle over the CPU one (same version, same output):
+#
+#   uv pip install paddlepaddle-gpu==3.3.1 --index-url https://www.paddlepaddle.org.cn/packages/stable/cu126/ \
+#       --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match
+paddleocr==3.7.0
+paddlepaddle==3.3.1
+opencv-python==5.0.0.93
+numpy>=2.3,<2.4
