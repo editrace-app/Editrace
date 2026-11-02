@@ -1,6 +1,6 @@
 # Golden-set labeling guide
 
-How to hand-label cuts and transitions in the golden videos (#4, #52). Settle edge cases here **before** labeling, not while looking at a video.
+How to hand-label cuts, transitions and text overlays in the golden videos (#4, #52, #13). Settle edge cases here **before** labeling, not while looking at a video.
 
 ## Setup
 
@@ -83,6 +83,7 @@ Make a timeline at the video's fps starting at `01:00:00:00` and put **timeline 
 
 `manifest.json` is committed, so it never names or links to the people in the videos.
 
+- **`text_labeled`, `text_other`, `text_ambiguous`, `text_labeling_minutes`**: written by `text_to_label.py` (see Text overlays). `text_other` lists the labeled captions and scene text as `{kind, text, start, duration}`.
 - **`rights`**: the usage rights for the video, e.g. `"full"` (any use permitted by the owner) or `"self-made"`.
 - **`edit_styles`**: tags for the editing in the video, so results can be broken down by style. Use these; add a new tag only if none fit:
 
@@ -109,6 +110,52 @@ Make a timeline at the video's fps starting at `01:00:00:00` and put **timeline 
   - `"unknown"`: there's music, but you can't tell which kind
 
   Don't write the song's name: #11 checks whether the vendors find it on their own.
+
+## Text overlays (#13)
+
+Text is labeled in a separate pass from cuts, with its own tool, so the cut labels stay as they are. These labels are the
+answer key for the OCR worker (#13): they measure its timing and text accuracy, and the thresholds it is tuned with.
+Same setup as above: the conformed file, and **blind** (don't look at OCR output first).
+
+1. Open `eval/golden/text_labeler.html` in Chrome and pick the video. It must be the conformed `videos/vNN.mp4`; the
+   converter refuses a file whose frame count doesn't match the label.
+2. For each piece of text, step to the **first frame it is fully visible** and press `I`; step to the **last frame it
+   is still visible** and press `O`; drag a box around it; type the text; pick a kind; press `Enter`.
+3. Press `S`, then run `python3.11 eval/golden/text_to_label.py vNN ~/Downloads/vNN.text.json`. It writes the label's
+   `text` track and the manifest's `text_labeled`, `text_other` and `text_ambiguous`. Re-running replaces them.
+
+### Kinds
+
+| Kind | What it is | Where it goes |
+|---|---|---|
+| `overlay` | Text the editor added: titles, lower thirds, stickers, labels, call-outs, watermark-style text added on top | The label's `text` track (`text_overlays[]`) |
+| `caption` | Burned-in speech captions, shown line by line or word by word as someone talks | Manifest `text_other` (the captions worker #12 owns these) |
+| `scene` | Text that is part of the footage: signs, shirts, packaging, phone screens, subtitles baked into a film clip | Manifest `text_other` |
+
+Labeling captions and scene text matters: it lets the scorer say whether the worker's false positives are captions or
+signs, which decides what to fix.
+
+### Rules
+
+1. **Timing.** `I` is the first frame where the text is fully there, not the first frame of a fade-in. `O` is the last
+   frame it is still readable. A fade or pop-in of a few frames doesn't change this; the scorer's tolerance covers it.
+2. **One item per block of text that appears and disappears together.** A title on two lines is one item, with the
+   box around both lines and the text joined with a space. Two separate texts on screen at once are two items.
+3. **Text that changes** (a counter, a typewriter reveal, a word swapped in place): one item per distinct text. For a
+   reveal, label the final full text from the frame it completes.
+4. **Text that moves** (slides in, drifts, follows an object): box it where it is **at the middle of its time on
+   screen**. Moving text is still an overlay if the editor added it, and scene text if it is part of the footage.
+5. **Which kind?** If it would exist in the footage without an editor (a shop sign, a jersey number), it's `scene`. If
+   it is added in editing and isn't speech, it's `overlay`. If it is a transcript of what is being said, it's
+   `caption`, even when styled, word-highlighted or animated. A title that happens to repeat a spoken phrase is still an
+   `overlay` if it stays as a title instead of following the speech.
+6. **Spell exactly what is shown**, with its case and punctuation. Write `[emoji]` for an emoji you can't type. Don't
+   fix typos or censoring: the worker should read what is there.
+7. **Too small or unreadable** (fine print, text blurred or covered, under about 1% of the frame height): leave it out
+   and mention it in the video's `notes`. Don't guess at the words.
+8. **Platform furniture** (the app's UI, like-and-share buttons, usernames, the Instagram handle watermark): not
+   labeled. Platform end cards go in `exclude` (rule 12 above), and score.py leaves those frames out.
+9. **Unsure:** record your best guess and tick *unsure*. These are listed in `text_ambiguous` for a second labeler.
 
 ## After the detectors run
 
