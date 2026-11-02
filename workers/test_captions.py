@@ -264,6 +264,34 @@ def test_ffmpeg_failure_surfaces_stderr(
         _extract_audio(tmp_path / "in.mp4", tmp_path / "out.wav")
 
 
+@pytest.mark.parametrize(
+    "message",
+    [
+        "[out#0/wav @ 0x1] Output file does not contain any stream",
+        "Output file #0 does not contain any stream",
+    ],
+)
+def test_a_video_with_no_audio_stream_is_not_an_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, message: str
+) -> None:
+    class FakeResult:
+        returncode = 1
+        stderr = message
+
+    monkeypatch.setattr("shutil.which", lambda name, path=None: "/usr/bin/ffmpeg")
+    monkeypatch.setattr("subprocess.run", lambda *a, **k: FakeResult())
+    assert _extract_audio(tmp_path / "in.mp4", tmp_path / "out.wav") is False
+
+
+def test_a_video_with_no_audio_stream_transcribes_to_no_words(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Never reaches the model: nothing to load, so the optional faster-whisper dependency is not needed.
+    monkeypatch.setattr("workers.captions._extract_audio", lambda *a, **k: False)
+    transcription = WhisperTranscriber().transcribe(tmp_path / "in.mp4", None)
+    assert list(transcription.words) == []
+
+
 def test_whisper_transcriber_construction_is_lazy() -> None:
     # Must not import faster-whisper (an optional, heavy dependency) just to build the object.
     WhisperTranscriber(model_size="tiny")

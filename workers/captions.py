@@ -7,6 +7,7 @@ model or run ffmpeg.
 """
 
 import math
+import re
 import shutil
 import subprocess
 import tempfile
@@ -38,9 +39,15 @@ class Transcriber(Protocol):
     def transcribe(self, video: Path, language: str | None) -> Transcription: ...
 
 
-def _extract_audio(video: Path, audio: Path, ffmpeg_dir: str | None = None) -> None:
-    """16kHz mono PCM, what Whisper expects. Raises RuntimeError (not retried: a bad video fails the same way twice)
-    if ffmpeg is missing or the input can't be decoded."""
+# ffmpeg's message when -vn leaves nothing to write: the input has no audio stream (a silent screen recording or a
+# b-roll export), which is not an error, just a video with no speech. Older builds say "Output file #0".
+_NO_AUDIO_STREAM = re.compile(r"Output file (#\d+ )?does not contain any stream")
+
+
+def _extract_audio(video: Path, audio: Path, ffmpeg_dir: str | None = None) -> bool:
+    """16kHz mono PCM, what Whisper expects. Returns False, writing nothing, if the video has no audio stream. Raises
+    RuntimeError (not retried: a bad video fails the same way twice) if ffmpeg is missing or the input can't be
+    decoded."""
     ffmpeg = shutil.which("ffmpeg", path=ffmpeg_dir)
     if ffmpeg is None:
         where = f"in {ffmpeg_dir}" if ffmpeg_dir else "on PATH"
@@ -54,7 +61,10 @@ def _extract_audio(video: Path, audio: Path, ffmpeg_dir: str | None = None) -> N
         text=True,
     )
     if result.returncode != 0:
+        if _NO_AUDIO_STREAM.search(result.stderr):
+            return False
         raise RuntimeError(f"ffmpeg failed to extract audio: {result.stderr[-2000:]}")
+    return True
 
 
 ENVELOPE_HOP_S = 0.01
@@ -149,7 +159,8 @@ class WhisperTranscriber:
     def transcribe(self, video: Path, language: str | None) -> Transcription:
         with tempfile.TemporaryDirectory() as tmp:
             audio = Path(tmp) / "audio.wav"
-            _extract_audio(video, audio, self.ffmpeg_dir)
+            if not _extract_audio(video, audio, self.ffmpeg_dir):
+                return Transcription(language or "und", [])
             segments, info = self._load().transcribe(
                 str(audio),
                 language=language,
