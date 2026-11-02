@@ -319,7 +319,7 @@ class PaddleReader:
 
     def _load(self) -> Any:
         if self._ocr is None:
-            from paddleocr import PaddleOCR
+            from paddleocr import PaddleOCR  # pyright: ignore[reportMissingImports]  # not in the root lock
 
             self._ocr = PaddleOCR(
                 use_doc_orientation_classify=False,
