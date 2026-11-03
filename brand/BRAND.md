@@ -101,7 +101,7 @@ Embed both:
 | `wordmark-light` / `wordmark-dark` ([SVG](logo/svg/wordmark-light.svg) / [SVG](logo/svg/wordmark-dark.svg), PNGs in [logo/png](logo/png/)) | Where the icon already appears nearby, or where space is very wide and short (footers, credits). |
 | `icon-light` / `icon-dark` ([SVG](logo/svg/icon-light.svg) / [SVG](logo/svg/icon-dark.svg), PNGs at 256/512/1024 in [logo/png](logo/png/)) | Standalone mark on light or dark backgrounds: app UI, watermarks, small placements. |
 | `icon-mono-black` / `icon-mono-white` ([SVG](logo/svg/icon-mono-black.svg) / [SVG](logo/svg/icon-mono-white.svg), PNGs in [logo/png](logo/png/)) | Single-colour use: print, embossing, stamps, one-colour merch, overlays on photography or video. |
-| [`avatar-800`](social/avatars/avatar-800.png) (ink square, centred icon) | The profile picture for every platform (TikTok, Instagram, YouTube, X, LinkedIn). 800×800; each platform scales it down. Built to sit fully inside the circular crop. |
+| [`avatar-800`](social/avatars/avatar-800.png) (ink square, centred icon) | The profile picture for every platform (TikTok, Instagram, X, LinkedIn). 800×800; each platform scales it down. Built to sit fully inside the circular crop. |
 | [`favicon-32`](logo/favicon/favicon-32.png) / [`apple-touch-icon-180`](logo/favicon/apple-touch-icon-180.png) | Browser tab and iOS home screen. The 32px file is a pixel-snapped version (see below). |
 
 Logo on Leader Red (e.g. the red circle avatar variant): use the mono version in Bone/white only.
@@ -135,7 +135,6 @@ Below 32px, use the pixel-snapped icon (`favicon-32`). Its frame sides are whole
 ## Social assets notes
 
 - **Avatars:** Ink background with the dark icon, sized to 63% of the canvas so it sits well inside every platform's circle crop.
-- **Banners** ([YouTube](social/banners/youtube-banner.png), [X](social/banners/x-header.png), [LinkedIn](social/banners/linkedin-banner.png)): Ink background, the dark lockup, the tagline with a red full stop, and the timeline breakdown motif (clip track, Brass keyframes, red playhead with a mono timecode).
-  - YouTube keeps the logo and text inside the central 1546×423 safe area.
+- **Banners** ([X](social/banners/x-header.png), [LinkedIn](social/banners/linkedin-banner.png)): Ink background, the dark lockup, the tagline with a red full stop, and the timeline breakdown motif (clip track, Brass keyframes, red playhead with a mono timecode).
   - X keeps the bottom-left clear for the profile picture.
   - LinkedIn keeps the left side clear for the logo overlap.
