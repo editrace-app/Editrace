@@ -26,17 +26,51 @@ One ADR = one decision. If the idea contains several decisions (e.g. "use Python
 - Show the full draft to the author and revise until they're happy. **Don't open a PR without their explicit go-ahead.**
 
 ### 4. Open for approval
+Run this as **one script** (one Bash call): shell variables don't carry between calls, and `PR_URL` is needed by the discussion step.
 ```sh
 git fetch origin main
 git checkout -b adr/NNNN-kebab-title origin/main
 git add docs/decisions/NNNN-kebab-title.md
 git commit -m "ADR NNNN: <title> (proposed)"
 git push -u origin adr/NNNN-kebab-title
-gh pr create --draft --label proposal,adr \
+
+# Quoted heredocs, so backticks and $(...) in the ADR text are not expanded.
+TMP=$(mktemp -d)
+cat > "$TMP/pr_body" <<'EOF_PR'
+<summary + grill scorecard + 'Approval = code-owner review and merge'>
+EOF_PR
+PR_URL=$(gh pr create --draft --label proposal,adr \
   --title "ADR NNNN: <title>" \
-  --body "<summary + grill scorecard + 'Approval = code-owner review and merge'>"
+  --body-file "$TMP/pr_body")
+echo "PR: $PR_URL"
+
+# Start the discussion thread in the ADR category and link the two.
+DISC_URL=""
+read -r REPO_ID OWNER NAME < <(gh repo view --json id,owner,name --jq '[.id,.owner.login,.name]|@tsv')
+CAT_ID=$(gh api graphql -f query='query($o:String!,$n:String!){repository(owner:$o,name:$n){discussionCategories(first:20){nodes{id name}}}}' \
+  -f o="$OWNER" -f n="$NAME" --jq '.data.repository.discussionCategories.nodes[]|select(.name=="ADR").id')
+if [ -n "$CAT_ID" ]; then
+  cat > "$TMP/title" <<'EOF_TITLE'
+ADR NNNN: <title>
+EOF_TITLE
+  cat > "$TMP/body" <<'EOF_BODY'
+<decision in short, options, open questions; approval happens on the PR>
+EOF_BODY
+  printf '\n\nPR: %s\n' "$PR_URL" >> "$TMP/body"
+  DISC_URL=$(gh api graphql -f query='mutation($r:ID!,$c:ID!,$t:String!,$b:String!){createDiscussion(input:{repositoryId:$r,categoryId:$c,title:$t,body:$b}){discussion{url}}}' \
+    -f r="$REPO_ID" -f c="$CAT_ID" -F t=@"$TMP/title" -F b=@"$TMP/body" \
+    --jq '.data.createDiscussion.discussion.url') || DISC_URL=""
+fi
+if [ -n "$DISC_URL" ]; then
+  gh pr comment "$PR_URL" --body "Discussion thread for this ADR: $DISC_URL"
+else
+  echo "NO DISCUSSION THREAD CREATED (no ADR category, or createDiscussion failed)"
+fi
+rm -rf "$TMP"
 ```
-Tell the author: the PR is a draft. Mark it **Ready for review** when discussion is done. It merges only with code-owner approval (CODEOWNERS covers `docs/decisions/`).
+The thread body is the decision in short, the options and the open questions, plus the PR link, and says approval happens on the PR. Never create the discussion with an empty category ID.
+
+If the script prints `NO DISCUSSION THREAD CREATED`, tell the author the thread was **not** opened and why (no `ADR` category, or the mutation failed: permissions, rate limit, Discussions off). Otherwise tell the author: the PR is a draft and the discussion thread is open at `$DISC_URL`. Mark the PR **Ready for review** when discussion is done. It merges only with code-owner approval (CODEOWNERS covers `docs/decisions/`).
 
 ### 5. After approval (only when asked, and only once merged)
 Check the PR is merged (`gh pr view <n> --json state` must be `MERGED`) and the file on `origin/main` still says `Status: Proposed`. A merged `Rejected` file is a record, not an approval. If either check fails, stop. Merging a Proposed ADR is the approval. Status isn't flipped inside the proposal PR, because `main` dismisses approvals on new commits. Then, on a new branch:

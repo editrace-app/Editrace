@@ -9,8 +9,8 @@ Proposed ──(code owner approves + merges PR)──▶ Accepted ──▶ Sup
     └──(set Status: Rejected + reason, merge)──▶ Rejected
 ```
 
-1. **Propose:** in Claude Code, run `/propose-adr`. It grills you on the decision, drafts the ADR and opens a **draft PR** labeled `proposal` + `adr`.
-2. **Discuss:** in the PR. Mark it Ready for review when done.
+1. **Propose:** in Claude Code, run `/propose-adr`. It grills you on the decision, drafts the ADR, opens a **draft PR** labeled `proposal` + `adr`, and, if the **ADR** category exists in [Discussions](https://github.com/editrace-app/Editrace/discussions/categories/adr), starts a thread there that links to the PR (and the PR links back). If the thread can't be created, the skill says so and you open it by hand.
+2. **Discuss:** in the Discussions thread or the PR. Mark the PR Ready for review when done. Approval happens only on the PR.
 3. **Approve:** CODEOWNERS covers this folder, so the PR can't merge without code-owner approval. **Merged = Accepted.** A follow-up PR flips the `Status:` line.
 4. **Change your mind later:** write a new ADR that supersedes the old one. Accepted ADRs are never rewritten.
 
