@@ -1,0 +1,642 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "duration": 1770,
+    "fps": {
+      "num": 30,
+      "den": 1
+    },
+    "resolution": {
+      "width": 720,
+      "height": 1280
+    },
+    "aspect_ratio": {
+      "num": 9,
+      "den": 16
+    },
+    "content_hash": "sha256:d447ed18de5882ef9d8639bed315676942458e22f07d60deae038860f8c6bc30"
+  },
+  "tracks": [
+    {
+      "id": "video-1",
+      "kind": "video",
+      "slots": [],
+      "cuts": [],
+      "transitions": []
+    },
+    {
+      "id": "text-1",
+      "kind": "text",
+      "text_overlays": [
+        {
+          "id": "text-1",
+          "text": "When a Powerlifter tries Calisthenics",
+          "bbox": {
+            "x": 0.15448,
+            "y": 0.10723,
+            "w": 0.70295,
+            "h": 0.09829
+          },
+          "range": {
+            "start": 0,
+            "duration": 91
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-2",
+          "text": "100KG Powerlifter",
+          "bbox": {
+            "x": 0.04924,
+            "y": 0.11728,
+            "w": 0.64536,
+            "h": 0.14409
+          },
+          "range": {
+            "start": 92,
+            "duration": 17
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-3",
+          "text": "58KG Cali Athlete",
+          "bbox": {
+            "x": 0.16044,
+            "y": 0.16755,
+            "w": 0.67118,
+            "h": 0.13627
+          },
+          "range": {
+            "start": 115,
+            "duration": 19
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-4",
+          "text": "L-SIT(elevated)",
+          "bbox": {
+            "x": 0.34114,
+            "y": 0.09383,
+            "w": 0.31573,
+            "h": 0.09494
+          },
+          "range": {
+            "start": 134,
+            "duration": 212
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-5",
+          "text": "*impressed*",
+          "bbox": {
+            "x": 0.37887,
+            "y": 0.33733,
+            "w": 0.24623,
+            "h": 0.03574
+          },
+          "range": {
+            "start": 214,
+            "duration": 21
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-6",
+          "text": "*ur turn*",
+          "bbox": {
+            "x": 0.57943,
+            "y": 0.36414,
+            "w": 0.2502,
+            "h": 0.03798
+          },
+          "range": {
+            "start": 267,
+            "duration": 17
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-7",
+          "text": "*so wobbly*",
+          "bbox": {
+            "x": 0.18228,
+            "y": 0.68025,
+            "w": 0.25616,
+            "h": 0.03909
+          },
+          "range": {
+            "start": 292,
+            "duration": 24
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-8",
+          "text": "KIP UP PUSH UP",
+          "bbox": {
+            "x": 0.2081,
+            "y": 0.10611,
+            "w": 0.58579,
+            "h": 0.12399
+          },
+          "range": {
+            "start": 367,
+            "duration": 115
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-9",
+          "text": "KIP UP PUSH UP",
+          "bbox": {
+            "x": 0.20611,
+            "y": 0.11058,
+            "w": 0.60763,
+            "h": 0.12063
+          },
+          "range": {
+            "start": 516,
+            "duration": 111
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-10",
+          "text": "*great form that*",
+          "bbox": {
+            "x": 0.50397,
+            "y": 0.45908,
+            "w": 0.37133,
+            "h": 0.08042
+          },
+          "range": {
+            "start": 644,
+            "duration": 28
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-11",
+          "text": "MUSCLE UP",
+          "bbox": {
+            "x": 0.20413,
+            "y": 0.10723,
+            "w": 0.59175,
+            "h": 0.06702
+          },
+          "range": {
+            "start": 700,
+            "duration": 235
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-12",
+          "text": "*literally in awe*",
+          "bbox": {
+            "x": 0.16838,
+            "y": 0.4077,
+            "w": 0.30183,
+            "h": 0.08154
+          },
+          "range": {
+            "start": 813,
+            "duration": 28
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-13",
+          "text": "*getting coached*",
+          "bbox": {
+            "x": 0.33916,
+            "y": 0.32951,
+            "w": 0.31573,
+            "h": 0.03798
+          },
+          "range": {
+            "start": 952,
+            "duration": 23
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-14",
+          "text": "*maybe shedding some weight will help*",
+          "bbox": {
+            "x": 0.3332,
+            "y": 0.32839,
+            "w": 0.32963,
+            "h": 0.08936
+          },
+          "range": {
+            "start": 975,
+            "duration": 36
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-15",
+          "text": "*girl be so for real*",
+          "bbox": {
+            "x": 0.2915,
+            "y": 0.34515,
+            "w": 0.3058,
+            "h": 0.06032
+          },
+          "range": {
+            "start": 1011,
+            "duration": 17
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-16",
+          "text": "*joggers off*",
+          "bbox": {
+            "x": 0.47617,
+            "y": 0.36972,
+            "w": 0.22836,
+            "h": 0.08042
+          },
+          "range": {
+            "start": 1039,
+            "duration": 24
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-17",
+          "text": "MUSCLE UP",
+          "bbox": {
+            "x": 0.19618,
+            "y": 0.1117,
+            "w": 0.59969,
+            "h": 0.06925
+          },
+          "range": {
+            "start": 1063,
+            "duration": 94
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-18",
+          "text": "BOX  JUMP",
+          "bbox": {
+            "x": 0.196,
+            "y": 0.09794,
+            "w": 0.59418,
+            "h": 0.07306
+          },
+          "range": {
+            "start": 1219,
+            "duration": 47
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-19",
+          "text": "*worried*",
+          "bbox": {
+            "x": 0.50829,
+            "y": 0.40885,
+            "w": 0.22938,
+            "h": 0.04975
+          },
+          "range": {
+            "start": 1257,
+            "duration": 8
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-20",
+          "text": "BOX JUMP (82 cm)",
+          "bbox": {
+            "x": 0.2568,
+            "y": 0.09172,
+            "w": 0.47534,
+            "h": 0.11815
+          },
+          "range": {
+            "start": 1266,
+            "duration": 56
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-21",
+          "text": "BOX JUMP (82cm)",
+          "bbox": {
+            "x": 0.26786,
+            "y": 0.08239,
+            "w": 0.45876,
+            "h": 0.11815
+          },
+          "range": {
+            "start": 1322,
+            "duration": 49
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-22",
+          "text": "BOX JUMP #2",
+          "bbox": {
+            "x": 0.25956,
+            "y": 0.07928,
+            "w": 0.49469,
+            "h": 0.1197
+          },
+          "range": {
+            "start": 1392,
+            "duration": 29
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-23",
+          "text": "*more than HALF her height*",
+          "bbox": {
+            "x": 0.40604,
+            "y": 0.33734,
+            "w": 0.46153,
+            "h": 0.09172
+          },
+          "range": {
+            "start": 1392,
+            "duration": 29
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-24",
+          "text": "BOX JUMP(98cm)",
+          "bbox": {
+            "x": 0.25956,
+            "y": 0.0684,
+            "w": 0.50022,
+            "h": 0.13991
+          },
+          "range": {
+            "start": 1421,
+            "duration": 29
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-25",
+          "text": "BOX JUMP #2",
+          "bbox": {
+            "x": 0.22364,
+            "y": 0.08084,
+            "w": 0.55272,
+            "h": 0.12437
+          },
+          "range": {
+            "start": 1450,
+            "duration": 36
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-26",
+          "text": "*EFFORTLESS",
+          "bbox": {
+            "x": 0.30102,
+            "y": 0.64515,
+            "w": 0.39796,
+            "h": 0.05907
+          },
+          "range": {
+            "start": 1450,
+            "duration": 22
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-27",
+          "text": "*that was EASY",
+          "bbox": {
+            "x": 0.38669,
+            "y": 0.34511,
+            "w": 0.23767,
+            "h": 0.07928
+          },
+          "range": {
+            "start": 1486,
+            "duration": 16
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-28",
+          "text": "*still tweaking",
+          "bbox": {
+            "x": 0.26233,
+            "y": 0.29692,
+            "w": 0.22938,
+            "h": 0.07773
+          },
+          "range": {
+            "start": 1503,
+            "duration": 24
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-29",
+          "text": "princess treatment",
+          "bbox": {
+            "x": 0.20153,
+            "y": 0.32024,
+            "w": 0.30953,
+            "h": 0.08084
+          },
+          "range": {
+            "start": 1527,
+            "duration": 19
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-30",
+          "text": "BOX JUMP(98cm)",
+          "bbox": {
+            "x": 0.2568,
+            "y": 0.07928,
+            "w": 0.48087,
+            "h": 0.13058
+          },
+          "range": {
+            "start": 1573,
+            "duration": 117
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-31",
+          "text": "*locking in*",
+          "bbox": {
+            "x": 0.42815,
+            "y": 0.39797,
+            "w": 0.22938,
+            "h": 0.0513
+          },
+          "range": {
+            "start": 1650,
+            "duration": 20
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-32",
+          "text": "BOX JUMP #2",
+          "bbox": {
+            "x": 0.20429,
+            "y": 0.07928,
+            "w": 0.61352,
+            "h": 0.12903
+          },
+          "range": {
+            "start": 1690,
+            "duration": 9
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

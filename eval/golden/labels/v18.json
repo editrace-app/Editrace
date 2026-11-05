@@ -1,0 +1,262 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "duration": 1128,
+    "fps": {
+      "num": 30,
+      "den": 1
+    },
+    "resolution": {
+      "width": 720,
+      "height": 1280
+    },
+    "aspect_ratio": {
+      "num": 9,
+      "den": 16
+    },
+    "content_hash": "sha256:bf6099a6af6668d9e7f6263669672d87b7681793694e159b5fc917c435996f9a"
+  },
+  "tracks": [
+    {
+      "id": "video-1",
+      "kind": "video",
+      "slots": [],
+      "cuts": [],
+      "transitions": []
+    },
+    {
+      "id": "text-1",
+      "kind": "text",
+      "text_overlays": [
+        {
+          "id": "text-1",
+          "text": "WE DID IT BOYS!! (the first big milesone)",
+          "bbox": {
+            "x": 0.1386,
+            "y": 0.15414,
+            "w": 0.71883,
+            "h": 0.09494
+          },
+          "range": {
+            "start": 0,
+            "duration": 1128
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-2",
+          "text": "2 months ago",
+          "bbox": {
+            "x": 0.22796,
+            "y": 0.72604,
+            "w": 0.53019,
+            "h": 0.0592
+          },
+          "range": {
+            "start": 0,
+            "duration": 15
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-3",
+          "text": "I started my",
+          "bbox": {
+            "x": 0.25774,
+            "y": 0.72939,
+            "w": 0.46267,
+            "h": 0.06032
+          },
+          "range": {
+            "start": 15,
+            "duration": 16
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-4",
+          "text": "online business",
+          "bbox": {
+            "x": 0.20611,
+            "y": 0.72939,
+            "w": 0.57189,
+            "h": 0.05585
+          },
+          "range": {
+            "start": 31,
+            "duration": 20
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-5",
+          "text": "for the second time",
+          "bbox": {
+            "x": 0.1386,
+            "y": 0.73051,
+            "w": 0.71883,
+            "h": 0.05138
+          },
+          "range": {
+            "start": 51,
+            "duration": 24
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-6",
+          "text": "actually the",
+          "bbox": {
+            "x": 0.26568,
+            "y": 0.73274,
+            "w": 0.44679,
+            "h": 0.04468
+          },
+          "range": {
+            "start": 75,
+            "duration": 18
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-7",
+          "text": "first time I",
+          "bbox": {
+            "x": 0.2915,
+            "y": 0.72492,
+            "w": 0.39715,
+            "h": 0.05362
+          },
+          "range": {
+            "start": 93,
+            "duration": 18
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-8",
+          "text": "completely failed",
+          "bbox": {
+            "x": 0.17633,
+            "y": 0.72716,
+            "w": 0.64735,
+            "h": 0.05585
+          },
+          "range": {
+            "start": 111,
+            "duration": 25
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-9",
+          "text": "but this time",
+          "bbox": {
+            "x": 0.25774,
+            "y": 0.73051,
+            "w": 0.47062,
+            "h": 0.05362
+          },
+          "range": {
+            "start": 136,
+            "duration": 33
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-10",
+          "text": "we hit our",
+          "bbox": {
+            "x": 0.30341,
+            "y": 0.73498,
+            "w": 0.3753,
+            "h": 0.04356
+          },
+          "range": {
+            "start": 169,
+            "duration": 26
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-11",
+          "text": "first ever milestone",
+          "bbox": {
+            "x": 0.14853,
+            "y": 0.72716,
+            "w": 0.7089,
+            "h": 0.05473
+          },
+          "range": {
+            "start": 195,
+            "duration": 48
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-12",
+          "text": "big milestone",
+          "bbox": {
+            "x": 0.23788,
+            "y": 0.73051,
+            "w": 0.51232,
+            "h": 0.05585
+          },
+          "range": {
+            "start": 243,
+            "duration": 30
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

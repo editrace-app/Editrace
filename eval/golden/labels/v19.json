@@ -1,0 +1,91 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "duration": 3454,
+    "fps": {
+      "num": 24,
+      "den": 1
+    },
+    "resolution": {
+      "width": 720,
+      "height": 1280
+    },
+    "aspect_ratio": {
+      "num": 9,
+      "den": 16
+    },
+    "content_hash": "sha256:e2d9748cf8c71d27f8200486e7545d454afca2a67c6a88f77f06abdef12ad0f7"
+  },
+  "tracks": [
+    {
+      "id": "video-1",
+      "kind": "video",
+      "slots": [],
+      "cuts": [],
+      "transitions": []
+    },
+    {
+      "id": "text-1",
+      "kind": "text",
+      "text_overlays": [
+        {
+          "id": "text-1",
+          "text": "Fill Episode Now on YouTube!!",
+          "bbox": {
+            "x": 0.30378,
+            "y": 0.29692,
+            "w": 0.41454,
+            "h": 0.11504
+          },
+          "range": {
+            "start": 3255,
+            "duration": 169
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-2",
+          "text": "SubwayTakesUncut",
+          "bbox": {
+            "x": 0.07717,
+            "y": 0.41973,
+            "w": 0.90647,
+            "h": 0.18188
+          },
+          "range": {
+            "start": 3255,
+            "duration": 169
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-3",
+          "text": "WITH KAREEM RAHMA",
+          "bbox": {
+            "x": 0.49447,
+            "y": 0.527,
+            "w": 0.40349,
+            "h": 0.15235
+          },
+          "range": {
+            "start": 3277,
+            "duration": 147
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        }
+      ]
+    }
+  ]
+}
