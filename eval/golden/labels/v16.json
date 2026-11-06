@@ -1,0 +1,395 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "duration": 1187,
+    "fps": {
+      "num": 30,
+      "den": 1
+    },
+    "resolution": {
+      "width": 720,
+      "height": 1280
+    },
+    "aspect_ratio": {
+      "num": 9,
+      "den": 16
+    },
+    "content_hash": "sha256:c573a1c83fcae19ad8e42c5b44afcb3c15ead893bb2ec5dd5377144aff65bc68"
+  },
+  "tracks": [
+    {
+      "id": "video-1",
+      "kind": "video",
+      "slots": [],
+      "cuts": [],
+      "transitions": []
+    },
+    {
+      "id": "text-1",
+      "kind": "text",
+      "text_overlays": [
+        {
+          "id": "text-1",
+          "text": "found you.",
+          "bbox": {
+            "x": 0.32526,
+            "y": 0.17537,
+            "w": 0.33559,
+            "h": 0.05026
+          },
+          "range": {
+            "start": 0,
+            "duration": 1187
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-2",
+          "text": "let me know",
+          "bbox": {
+            "x": 0.30143,
+            "y": 0.60206,
+            "w": 0.3892,
+            "h": 0.03909
+          },
+          "range": {
+            "start": 0,
+            "duration": 14
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-3",
+          "text": "if this sounds familiar",
+          "bbox": {
+            "x": 0.20214,
+            "y": 0.59647,
+            "w": 0.59969,
+            "h": 0.05473
+          },
+          "range": {
+            "start": 14,
+            "duration": 36
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-4",
+          "text": "you're a software engineer",
+          "bbox": {
+            "x": 0.11278,
+            "y": 0.60876,
+            "w": 0.76848,
+            "h": 0.03239
+          },
+          "range": {
+            "start": 50,
+            "duration": 28
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-5",
+          "text": "but you only went into",
+          "bbox": {
+            "x": 0.19023,
+            "y": 0.59982,
+            "w": 0.62352,
+            "h": 0.04356
+          },
+          "range": {
+            "start": 78,
+            "duration": 31
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-6",
+          "text": "it for the money",
+          "bbox": {
+            "x": 0.27561,
+            "y": 0.60429,
+            "w": 0.45076,
+            "h": 0.04245
+          },
+          "range": {
+            "start": 109,
+            "duration": 21
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-7",
+          "text": "you're surprisingly extroverted",
+          "bbox": {
+            "x": 0.21008,
+            "y": 0.58754,
+            "w": 0.55998,
+            "h": 0.07037
+          },
+          "range": {
+            "start": 130,
+            "duration": 36
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-8",
+          "text": "and you definitely don't",
+          "bbox": {
+            "x": 0.16243,
+            "y": 0.60541,
+            "w": 0.67713,
+            "h": 0.04468
+          },
+          "range": {
+            "start": 166,
+            "duration": 31
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-9",
+          "text": "fall into the stereotypical",
+          "bbox": {
+            "x": 0.14257,
+            "y": 0.60541,
+            "w": 0.7089,
+            "h": 0.04021
+          },
+          "range": {
+            "start": 197,
+            "duration": 39
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-10",
+          "text": "software engineer archtype",
+          "bbox": {
+            "x": 0.12073,
+            "y": 0.60541,
+            "w": 0.76252,
+            "h": 0.04245
+          },
+          "range": {
+            "start": 236,
+            "duration": 36
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-11",
+          "text": "you're into fashion",
+          "bbox": {
+            "x": 0.23193,
+            "y": 0.60541,
+            "w": 0.53217,
+            "h": 0.04133
+          },
+          "range": {
+            "start": 272,
+            "duration": 36
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-12",
+          "text": "you care about",
+          "bbox": {
+            "x": 0.28951,
+            "y": 0.60876,
+            "w": 0.41899,
+            "h": 0.03351
+          },
+          "range": {
+            "start": 308,
+            "duration": 11
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-13",
+          "text": "the way you look",
+          "bbox": {
+            "x": 0.19817,
+            "y": 0.60652,
+            "w": 0.60565,
+            "h": 0.03798
+          },
+          "range": {
+            "start": 319,
+            "duration": 22
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-14",
+          "text": "and you have some",
+          "bbox": {
+            "x": 0.22994,
+            "y": 0.61099,
+            "w": 0.53615,
+            "h": 0.03239
+          },
+          "range": {
+            "start": 341,
+            "duration": 14
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-15",
+          "text": "sort of niche hobby",
+          "bbox": {
+            "x": 0.23391,
+            "y": 0.61099,
+            "w": 0.53813,
+            "h": 0.03351
+          },
+          "range": {
+            "start": 355,
+            "duration": 27
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-16",
+          "text": "but you are working",
+          "bbox": {
+            "x": 0.2081,
+            "y": 0.60541,
+            "w": 0.58579,
+            "h": 0.04021
+          },
+          "range": {
+            "start": 382,
+            "duration": 30
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-17",
+          "text": "a corporate job",
+          "bbox": {
+            "x": 0.27561,
+            "y": 0.60652,
+            "w": 0.44083,
+            "h": 0.03686
+          },
+          "range": {
+            "start": 412,
+            "duration": 27
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-18",
+          "text": "or maybe even a 996",
+          "bbox": {
+            "x": 0.20214,
+            "y": 0.60541,
+            "w": 0.59175,
+            "h": 0.03909
+          },
+          "range": {
+            "start": 439,
+            "duration": 42
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        },
+        {
+          "id": "text-19",
+          "text": "since you got that job",
+          "bbox": {
+            "x": 0.19221,
+            "y": 0.60317,
+            "w": 0.61359,
+            "h": 0.04245
+          },
+          "range": {
+            "start": 481,
+            "duration": 30
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        }
+      ]
+    }
+  ]
+}
