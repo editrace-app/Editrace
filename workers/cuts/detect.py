@@ -17,7 +17,13 @@ from pathlib import Path
 from typing import Any
 
 # ADR 0003. Any change here changes the output, so the worker reports these as its params (its cache key).
-ADAPTIVE_THRESHOLD = 2.0
+# Recall tuning (#7): ADR 0003's 2.0 with PySceneDetect's default window of 2 gave P 0.881 / R 0.925 on 14 golden
+# videos, under the 0.95 recall floor. 1.7 with a window of 3 gives P 0.852 / R 0.958 on the same 14 (tag
+# `tuning-7-recall`). PROVISIONAL: chosen on the videos it's scored on. Choosing on 13 and scoring the 14th gave
+# R 0.932, because the recovered cuts come from single videos (v12's flash burst, v14's 1-frame shots). Re-check on
+# held-out videos once #52 adds more of those.
+ADAPTIVE_THRESHOLD = 1.7
+WINDOW_WIDTH = 3  # frames each side of the current one in the rolling average; PySceneDetect's default is 2
 MIN_SCENE_LEN = 1  # frames; PySceneDetect's default of 15 drops fast cuts
 # Flagging (#7): the content check in `suspect_cuts()`. For two detections close together, is what's between them a
 # shot of its own (a real fast cut, or a flash) or just the change from one shot to the next (a duplicate detection)?
@@ -39,6 +45,7 @@ FLAGGED_MAX = 0.4
 PARAMS: dict[str, Any] = {
     "detector": "pyscenedetect.AdaptiveDetector",
     "adaptive_threshold": ADAPTIVE_THRESHOLD,
+    "window_width": WINDOW_WIDTH,
     "min_scene_len": MIN_SCENE_LEN,
     "flag_rule": "content",
     "pair_window_s": PAIR_WINDOW_S,
@@ -67,7 +74,9 @@ def find_cuts(video: Path) -> Detection:
 
     stream = open_video(str(video))
     detector = AdaptiveDetector(
-        adaptive_threshold=ADAPTIVE_THRESHOLD, min_scene_len=MIN_SCENE_LEN
+        adaptive_threshold=ADAPTIVE_THRESHOLD,
+        min_scene_len=MIN_SCENE_LEN,
+        window_width=WINDOW_WIDTH,
     )
     stats = StatsManager()
     manager = SceneManager(stats_manager=stats)
