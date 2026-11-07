@@ -110,6 +110,8 @@ Make a timeline at the video's fps starting at `01:00:00:00` and put **timeline 
 
   Don't write the song's name: #11 checks whether the vendors find it on their own.
 
+- **`held_out`**: `true` for the 10 test-set videos of milestone 3 (#52), which nobody tunes on: CI's golden eval skips them (`ci_eval.py`), and they're scored only at the end of Phase 1. Leave it out for every other video. Only a labeled video can be held out, and none of v01–v15 can be, since they've all been used for tuning.
+
 ## After the detectors run
 
 Review every disagreement between labels and detectors. If a label was wrong, fix it, and report how many labels changed alongside the results. Never change a label silently to match a detector.

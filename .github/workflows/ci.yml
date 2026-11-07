@@ -32,6 +32,7 @@ jobs:
       python: ${{ steps.d.outputs.python }}
       codegen: ${{ steps.d.outputs.codegen }}
       supabase: ${{ steps.d.outputs.supabase }}
+      golden: ${{ steps.d.outputs.golden }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -54,7 +55,9 @@ jobs:
           # Pushes to main always run everything (they record the coverage baseline). If the file list can't be read,
           # run everything.
           # The Supabase job (the longest) runs on a PR only if the PR touches the database, the RLS check or this file.
+          # The golden eval (#344) runs only on PRs that touch a worker, the golden set or this file; never on pushes.
           code=true
+          [ "$EVENT_NAME" = pull_request ] && golden=true || golden=false
           if [ "$EVENT_NAME" = pull_request ] && files=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/files" --paginate \
               --jq '.[] | .filename, (.previous_filename // empty)') && [ -n "$files" ]; then
             non_docs=$(printf '%s\n' "$files" | grep -vE '^(docs/.*\.md|[^/]+\.md)$' || true)
@@ -62,10 +65,13 @@ jobs:
             [ -z "$non_docs" ] && [ -z "$schema_doc" ] && code=false
             db_files=$(printf '%s\n' "$files" | grep -E '^(supabase/|\.github/scripts/(test-)?check-rls-tests\.sh$|\.github/workflows/ci\.yml$)' || true)
             [ -n "$db_files" ] || supabase=false
-            echo "Changed files: $(printf '%s\n' "$files" | wc -l); code=$code supabase=$supabase"
+            golden_files=$(printf '%s\n' "$files" | grep -E '^(workers/|eval/golden/|\.github/workflows/ci\.yml$)' || true)
+            [ -n "$golden_files" ] || golden=false
+            echo "Changed files: $(printf '%s\n' "$files" | wc -l); code=$code supabase=$supabase golden=$golden"
           fi
           echo "code=$code" >> "$GITHUB_OUTPUT"
           echo "supabase=$supabase" >> "$GITHUB_OUTPUT"
+          echo "golden=$golden" >> "$GITHUB_OUTPUT"
       # The gitleaks CLI, not gitleaks/gitleaks-action: since the repo moved to the editrace-app organization, the action
       # refuses to run without a paid GITLEAKS_LICENSE. The CLI is the same scanner and needs none. Pinned release with a
       # checksum, like actionlint below, at the version .pre-commit-config.yaml uses; bump them together. It reads the
@@ -323,10 +329,23 @@ jobs:
       - run: .github/scripts/check-rls-tests.sh
 
   # Single required check for branch protection: fails if any job failed, ignores skipped ones.
+  # Golden eval on worker changes (#344): scores the PR and main on the golden set's labeled videos (held-out ones
+  # never), on this one runner, and fails below the regression floors in eval/golden/ci_eval.py. The videos are
+  # private and not in the repo; until their storage is set up (#344), the job only lists the videos it will score.
+  golden-eval:
+    needs: detect
+    if: needs.detect.outputs.golden == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - name: Videos to score (labeled, not held out)
+        run: python3 eval/golden/ci_eval.py plan
+
   ci-ok:
     # A draft PR has no CI (see detect), so no ci-ok either; marking it ready runs everything.
     if: always() && (github.event_name != 'pull_request' || !github.event.pull_request.draft || startsWith(github.head_ref, 'armour-eval/'))
-    needs: [detect, scripts, web, python, coverage, supabase]
+    needs: [detect, scripts, web, python, coverage, supabase, golden-eval]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
