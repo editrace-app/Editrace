@@ -17,7 +17,13 @@ from pathlib import Path
 from typing import Any
 
 # ADR 0003. Any change here changes the output, so the worker reports these as its params (its cache key).
-ADAPTIVE_THRESHOLD = 2.0
+# Recall tuning (#7): ADR 0003's 2.0 with PySceneDetect's default window of 2 gave P 0.881 / R 0.925 on 14 golden
+# videos, under the 0.95 recall floor. 1.7 with a window of 3 gives P 0.852 / R 0.958 on the same 14 (tag
+# `tuning-7-recall`). PROVISIONAL: chosen on the videos it's scored on. Choosing on 13 and scoring the 14th gave
+# R 0.932, because the recovered cuts come from single videos (v12's flash burst, v14's 1-frame shots). Re-check on
+# held-out videos once #52 adds more of those.
+ADAPTIVE_THRESHOLD = 1.7
+WINDOW_WIDTH = 3  # frames each side of the current one in the rolling average; PySceneDetect's default is 2
 MIN_SCENE_LEN = 1  # frames; PySceneDetect's default of 15 drops fast cuts
 # Flagging (#7): the content check in `suspect_cuts()`. For two detections close together, is what's between them a
 # shot of its own (a real fast cut, or a flash) or just the change from one shot to the next (a duplicate detection)?
@@ -39,6 +45,7 @@ FLAGGED_MAX = 0.4
 PARAMS: dict[str, Any] = {
     "detector": "pyscenedetect.AdaptiveDetector",
     "adaptive_threshold": ADAPTIVE_THRESHOLD,
+    "window_width": WINDOW_WIDTH,
     "min_scene_len": MIN_SCENE_LEN,
     "flag_rule": "content",
     "pair_window_s": PAIR_WINDOW_S,
@@ -67,7 +74,9 @@ def find_cuts(video: Path) -> Detection:
 
     stream = open_video(str(video))
     detector = AdaptiveDetector(
-        adaptive_threshold=ADAPTIVE_THRESHOLD, min_scene_len=MIN_SCENE_LEN
+        adaptive_threshold=ADAPTIVE_THRESHOLD,
+        min_scene_len=MIN_SCENE_LEN,
+        window_width=WINDOW_WIDTH,
     )
     stats = StatsManager()
     manager = SceneManager(stats_manager=stats)
@@ -147,10 +156,12 @@ def suspect_cuts(video: Path, cuts: list[Cut], fps: float) -> frozenset[int]:
 
 def confidence(score: float) -> float:
     """Map an adaptive ratio to 0-1: 0.5 at the threshold, rising towards 1 as the cut stands out more (0.75 at twice
-    the threshold, 0.9 at five times). It never saturates, because real cuts on the golden set score 3 to 92.
+    the threshold, 0.9 at five times). It never saturates, because real cuts on the golden set score 1.7 to 255 (14
+    videos at threshold 1.7, window 3; the threshold and window both change what a ratio means, so re-measure with
+    them).
 
     It measures how strongly a cut stands out, not whether it's real: on the golden set, split-screen false cuts score
-    up to 28 and a picture-in-picture one 87, while some real cuts score 3. So it can't be the flag on its own (ADR 0003);
+    up to 27 and a picture-in-picture one 77, while some real cuts score under 2. So it can't be the flag on its own (ADR 0003);
     a flag rule has to decide that, and `to_partial()` combines the two.
     """
     if math.isnan(score) or score <= 0:

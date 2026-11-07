@@ -31,10 +31,11 @@ GOLDEN = Path(__file__).resolve().parents[2] / "eval" / "golden"
 RECALL_FLOOR = 0.95
 PRECISION_FLOOR = 0.75
 TOLERANCE = 2
-# Recall is under ADR 0003's floor (0.921 on 14 videos), so that check is an expected failure until #7's recall tuning
-# lands. Below this it fails outright: a regression on top of the known gap.
+# Recall is 0.958 on 14 videos with #7's retuned threshold, but chosen on those same videos (0.932 when each video is
+# held out), so a new video can still land under ADR 0003's floor; that's an expected failure, not a regression.
+# Below this it fails outright.
 RECALL_REGRESSION_FLOOR = 0.90
-# The flag rule's regression gate, set loosely around today's rates (14 videos: 35/245 real cuts flagged, 16/33 false
+# The flag rule's regression gate, set loosely around today's rates (14 videos: 37/254 real cuts flagged, 22/44 false
 # ones). Not targets: #7 tunes the rule, and these move with it.
 REAL_FLAGGED_MAX = 0.20
 FALSE_FLAGGED_MIN = 0.40
@@ -163,7 +164,7 @@ def test_recall_meets_the_floor(golden: GoldenRun) -> None:
         # Not a strict xfail: v01-v05 alone pass on Windows and not on macOS (see above), so it would fail by machine.
         pytest.xfail(
             f"recall {golden.total.recall:.3f} is under ADR 0003's {RECALL_FLOOR}; "
-            "recall tuning is tracked on #7. Remove this once it passes."
+            "recall tuning is tracked on #7. Remove this once it passes on held-out videos."
         )
 
 

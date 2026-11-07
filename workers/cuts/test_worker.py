@@ -78,6 +78,7 @@ def test_params_carry_every_setting_that_changes_the_output(
     assert {k: v for k, v in params.items() if k != "libraries"} == PARAMS
     for setting in (
         "adaptive_threshold",
+        "window_width",
         "min_scene_len",
         "flag_rule",
         "review_below",
