@@ -24,7 +24,7 @@ from workers.cuts.detect import (
 class CutsWorker(Worker):
     name: ClassVar[str] = "cuts"
     # Bump on any change that can change the output; it is part of the cache key, along with params().
-    version: ClassVar[str] = "0.1.0"
+    version: ClassVar[str] = "0.2.0"
     # CPU only: AdaptiveDetector needs no GPU. PROVISIONAL until #7 measures latency and cost on Modal.
     compute: ClassVar[Compute] = Compute(cpu=2.0, memory_mb=4096, timeout_s=300)
 
