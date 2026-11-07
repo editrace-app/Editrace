@@ -23,3 +23,4 @@ To reject an ADR, set `Status: Rejected` with a reason on the PR branch and merg
 | 0001 | [Host the web app on Cloudflare Workers instead of Vercel](0001-host-web-app-on-cloudflare-workers.md) | Rejected |
 | 0002 | [Represent template time as integer frames on one rational timebase, and version the schema with semver](0002-time-representation-and-schema-versioning.md) | Accepted |
 | 0003 | [Detect cuts with PySceneDetect's AdaptiveDetector and flag suspect cuts for review](0003-use-pyscenedetect-adaptive-for-cut-detection.md) | Accepted |
+| 0005 | [Retune AdaptiveDetector to threshold 1.7 and window 3 for recall, provisionally](0005-retune-adaptive-cut-detection-for-recall.md) | Proposed |
