@@ -11,6 +11,7 @@ from editrace_schema import Template
 from workers.cuts.detect import (
     ADAPTIVE_THRESHOLD,
     FLAGGED_MAX,
+    PARAMS,
     REVIEW_BELOW,
     Cut,
     Detection,
@@ -71,6 +72,30 @@ def test_cuts_land_on_the_first_frame_of_each_new_shot(tmp_path: Path) -> None:
     detection = find_cuts(video)
     assert detection.frames == 100
     assert [c.frame for c in detection.cuts] == [20, 45, 70]
+
+
+def test_the_detector_runs_with_the_settings_in_params(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`PARAMS` is the cache key, so a setting it records but `find_cuts()` doesn't pass would serve wrong results."""
+    import scenedetect
+
+    seen: list[dict] = []
+    real = scenedetect.AdaptiveDetector
+
+    def spy(**kwargs):
+        seen.append(kwargs)
+        return real(**kwargs)
+
+    monkeypatch.setattr(scenedetect, "AdaptiveDetector", spy)
+    find_cuts(make_video(tmp_path / "one_cut.mp4", 40, [20]))
+    assert seen == [
+        {
+            "adaptive_threshold": PARAMS["adaptive_threshold"],
+            "min_scene_len": PARAMS["min_scene_len"],
+            "window_width": PARAMS["window_width"],
+        }
+    ]
 
 
 def test_partial_has_slots_tiling_the_video_and_validates(tmp_path: Path) -> None:

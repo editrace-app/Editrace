@@ -156,10 +156,12 @@ def suspect_cuts(video: Path, cuts: list[Cut], fps: float) -> frozenset[int]:
 
 def confidence(score: float) -> float:
     """Map an adaptive ratio to 0-1: 0.5 at the threshold, rising towards 1 as the cut stands out more (0.75 at twice
-    the threshold, 0.9 at five times). It never saturates, because real cuts on the golden set score 3 to 92.
+    the threshold, 0.9 at five times). It never saturates, because real cuts on the golden set score 1.7 to 255 (14
+    videos at threshold 1.7, window 3; the threshold and window both change what a ratio means, so re-measure with
+    them).
 
     It measures how strongly a cut stands out, not whether it's real: on the golden set, split-screen false cuts score
-    up to 28 and a picture-in-picture one 87, while some real cuts score 3. So it can't be the flag on its own (ADR 0003);
+    up to 27 and a picture-in-picture one 77, while some real cuts score under 2. So it can't be the flag on its own (ADR 0003);
     a flag rule has to decide that, and `to_partial()` combines the two.
     """
     if math.isnan(score) or score <= 0:
