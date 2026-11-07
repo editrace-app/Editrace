@@ -27,9 +27,10 @@ import score
 ROOT = Path(__file__).resolve().parent
 
 # Below these the check fails. Cuts: ADR 0003's precision floor, and the hard recall floor that #7's golden test
-# (`workers/cuts/test_golden.py`) keeps under ADR 0003's 0.95 while recall tuning is open on #7.
+# (`workers/cuts/test_golden.py`) keeps under ADR 0003's 0.95.
 FLOORS = {"cuts": {"precision": 0.75, "recall": 0.90}}
-# Reported when missed, but not enforced yet: ADR 0003's recall floor (0.925 today, #7).
+# Reported when missed, but not enforced yet: ADR 0003's recall floor. #350's threshold reaches 0.958 on 14 videos,
+# but it was tuned on them (0.932 when each is held out), so enforce it once held-out videos confirm it (#311).
 TARGETS = {"cuts": {"recall": 0.95}}
 WORST = 3  # videos listed under "worst regressions"
 
