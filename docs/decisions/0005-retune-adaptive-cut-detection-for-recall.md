@@ -49,7 +49,9 @@ All numbers on the same 14 videos, ±2 frames, end cards excluded. "Leave-one-ou
 
 We will run AdaptiveDetector at **`adaptive_threshold` 1.7 and `window_width` 3**, **provisionally, as a bet**: that held-out videos will look more like v12 and v14 (flash bursts, 1-frame shots) than the leave-one-out run suggests.
 
-The current evidence doesn't support it on cost. ADR 0003's asymmetry still holds (a false cut costs a merge, and half of A's false cuts are flagged; a missed cut costs finding the frame and another clip), and we judge a missed cut worth about 4 merges. But on the leave-one-out estimate, 1.7 costs 7–8 merges per cut recovered, so it fails that test. We take the bet anyway because it's a two-way door: two constants, already merged in #350. The keep rule below reverts it automatically if held-out videos don't bear it out.
+The current evidence doesn't support it on cost. ADR 0003's asymmetry still holds (a false cut costs a merge, and half of A's false cuts are flagged; a missed cut costs finding the frame and another clip), and we judge a missed cut worth about 4 merges. But on the leave-one-out estimate, 1.7 costs 7–8 merges per cut recovered, so it fails that test. We take the bet anyway because it's a two-way door: two constants, already merged in #350. If held-out videos don't bear it out, @calvinkafaiyuen reverts it in #311, under the keep rule below.
+
+In Phase 0, with no users, shipping it buys little beyond clearing #7's golden-test gate: no one bears the extra false cuts until uploads start, and the held-out check decides before then. Against Option B it keeps the 0.95 floor instead of lowering it on 14 videos; against Option E it lets #7 close now instead of waiting on #52 with no date.
 
 ## Consequences
 
@@ -61,15 +63,15 @@ The current evidence doesn't support it on cost. ADR 0003's asymmetry still hold
 
 ## How we'll know
 
-On #52's held-out videos (none are held out yet), score both 1.7/window 3 and 2.0/window 2:
+On #52's held-out videos (none are held out yet), score both 1.7/window 3 and 2.0/window 2, **once**. Decided by Phase 1 exit at the latest; if the check hasn't run by then, revert to 2.0.
 - **Keep 1.7** and drop "provisional" only if all of these hold for 1.7 against 2.0:
   - recall ≥ 0.95 and precision ≥ 0.75;
   - extra real cuts × 4 ≥ extra false cuts (the cost rule in the Decision);
   - at least 3 extra real cuts (platform decoding differs by about 1 cut).
 
-  Then confirm on Modal (#320), whose numbers count for sign-off.
+  Then confirm on Modal, whose numbers count for sign-off. The pass criteria, and how the golden videos reach the container, are defined in #320.
 - **Revert to 2.0** if any of them fails. On current evidence (+2 real, +15 false) **the keep test is expected to fail**.
-- **Replace** with any setting, detector or second stage that beats the current one on held-out recall while staying at or above the precision floor.
+- **Replace** with any setting, detector or second stage that beats the current one on held-out recall while staying at or above the precision floor. Candidates are chosen on the non-held-out videos only; the held-out videos are never used to pick one.
 - If neither setting reaches 0.95, revisit the floor itself (Option B).
 
 ADR 0003's production revisit check (merges and adds per template) still applies.
