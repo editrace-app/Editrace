@@ -1,0 +1,53 @@
+{
+  "schema_version": "0.1.0",
+  "source": {
+    "duration": 1458,
+    "fps": {
+      "num": 30,
+      "den": 1
+    },
+    "resolution": {
+      "width": 720,
+      "height": 1280
+    },
+    "aspect_ratio": {
+      "num": 9,
+      "den": 16
+    },
+    "content_hash": "sha256:c92bc4014aabf35ea37c25cd4e5d4d752e055bbc5b37038441303d3b2bc16e73"
+  },
+  "tracks": [
+    {
+      "id": "video-1",
+      "kind": "video",
+      "slots": [],
+      "cuts": [],
+      "transitions": []
+    },
+    {
+      "id": "text-1",
+      "kind": "text",
+      "text_overlays": [
+        {
+          "id": "text-1",
+          "text": "how to start posting content (fear of judgement + what to post)",
+          "bbox": {
+            "x": 0.09888,
+            "y": 0.17202,
+            "w": 0.81415,
+            "h": 0.06814
+          },
+          "range": {
+            "start": 0,
+            "duration": 141
+          },
+          "confidence": 1,
+          "provenance": {
+            "detector": "manual",
+            "version": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

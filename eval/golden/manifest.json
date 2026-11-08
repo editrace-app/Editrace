@@ -654,6 +654,1503 @@
           "reason": "platform end card"
         }
       ]
+    },
+    {
+      "id": "v16",
+      "content_hash": "sha256:c573a1c83fcae19ad8e42c5b44afcb3c15ead893bb2ec5dd5377144aff65bc68",
+      "original_sha256": "b47763139d076c3c36f61194d34b50ae63cf020c1e2c7b969e899b6329da21c0",
+      "fps": {
+        "num": 30,
+        "den": 1
+      },
+      "frames": 1187,
+      "resolution": {
+        "width": 720,
+        "height": 1280
+      },
+      "vfr": false,
+      "rights": "",
+      "edit_styles": [],
+      "music": null,
+      "labeled": false,
+      "labeling_minutes": null,
+      "notes": [],
+      "ambiguous": [],
+      "exclude": [],
+      "text_labeled": true,
+      "text_other": [
+        {
+          "kind": "caption",
+          "text": "you got some money now",
+          "start": 511,
+          "duration": 29
+        },
+        {
+          "kind": "caption",
+          "text": "and you started traveling",
+          "start": 540,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "and you've realized",
+          "start": 565,
+          "duration": 29
+        },
+        {
+          "kind": "caption",
+          "text": "how much there is",
+          "start": 594,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "outside of the place",
+          "start": 617,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "that you grew up",
+          "start": 638,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "so now you wanna",
+          "start": 655,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "move to New York City",
+          "start": 675,
+          "duration": 26
+        },
+        {
+          "kind": "caption",
+          "text": "not SF",
+          "start": 701,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "because you don't wanna be",
+          "start": 721,
+          "duration": 29
+        },
+        {
+          "kind": "caption",
+          "text": "surrounded by tech bros",
+          "start": 750,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "talking about AI all day",
+          "start": 775,
+          "duration": 45
+        },
+        {
+          "kind": "caption",
+          "text": "you might even wanna",
+          "start": 820,
+          "duration": 26
+        },
+        {
+          "kind": "caption",
+          "text": "start creating content",
+          "start": 846,
+          "duration": 29
+        },
+        {
+          "kind": "caption",
+          "text": "or build your own startup",
+          "start": 875,
+          "duration": 35
+        },
+        {
+          "kind": "caption",
+          "text": "not because of the money",
+          "start": 910,
+          "duration": 39
+        },
+        {
+          "kind": "caption",
+          "text": "but because you",
+          "start": 949,
+          "duration": 19
+        },
+        {
+          "kind": "caption",
+          "text": "wanna be your own boss",
+          "start": 968,
+          "duration": 28
+        },
+        {
+          "kind": "caption",
+          "text": "you want that",
+          "start": 996,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "location freedom",
+          "start": 1014,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "and you just wanna",
+          "start": 1035,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "do something that you",
+          "start": 1056,
+          "duration": 24
+        },
+        {
+          "kind": "caption",
+          "text": "enjoy for the",
+          "start": 1080,
+          "duration": 15
+        },
+        {
+          "kind": "caption",
+          "text": "rest of your life",
+          "start": 1095,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "and if I just described you",
+          "start": 1115,
+          "duration": 39
+        },
+        {
+          "kind": "caption",
+          "text": "then welcome to the club",
+          "start": 1154,
+          "duration": 33
+        }
+      ],
+      "text_ambiguous": [],
+      "text_labeling_minutes": 49
+    },
+    {
+      "id": "v17",
+      "content_hash": "sha256:c92bc4014aabf35ea37c25cd4e5d4d752e055bbc5b37038441303d3b2bc16e73",
+      "original_sha256": "47f0177156ade306716c82edfc754641fef12357f75aa8b38b0866885c19e02f",
+      "fps": {
+        "num": 30,
+        "den": 1
+      },
+      "frames": 1458,
+      "resolution": {
+        "width": 720,
+        "height": 1280
+      },
+      "vfr": false,
+      "rights": "",
+      "edit_styles": [],
+      "music": null,
+      "labeled": false,
+      "labeling_minutes": null,
+      "notes": [],
+      "ambiguous": [],
+      "exclude": [],
+      "text_labeled": true,
+      "text_other": [
+        {
+          "kind": "caption",
+          "text": "one of the most",
+          "start": 0,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "common questions",
+          "start": 20,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "I get asked",
+          "start": 41,
+          "duration": 15
+        },
+        {
+          "kind": "caption",
+          "text": "as a full time",
+          "start": 56,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "creator is",
+          "start": 81,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "how do you",
+          "start": 98,
+          "duration": 14
+        },
+        {
+          "kind": "caption",
+          "text": "start posting content",
+          "start": 112,
+          "duration": 29
+        },
+        {
+          "kind": "caption",
+          "text": "this is usually",
+          "start": 141,
+          "duration": 24
+        },
+        {
+          "kind": "caption",
+          "text": "by my friends",
+          "start": 165,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "that are",
+          "start": 188,
+          "duration": 7
+        },
+        {
+          "kind": "caption",
+          "text": "interested in it",
+          "start": 195,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "and for the",
+          "start": 220,
+          "duration": 10
+        },
+        {
+          "kind": "caption",
+          "text": "longest time",
+          "start": 230,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "I really didn't",
+          "start": 251,
+          "duration": 34
+        },
+        {
+          "kind": "caption",
+          "text": "have an answer",
+          "start": 285,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "besides just",
+          "start": 308,
+          "duration": 32
+        },
+        {
+          "kind": "caption",
+          "text": "pick up your camera",
+          "start": 340,
+          "duration": 38
+        },
+        {
+          "kind": "caption",
+          "text": "record your",
+          "start": 378,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "daily life and",
+          "start": 395,
+          "duration": 22
+        },
+        {
+          "kind": "caption",
+          "text": "then post it",
+          "start": 417,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "but it's come",
+          "start": 435,
+          "duration": 19
+        },
+        {
+          "kind": "caption",
+          "text": "to my attention",
+          "start": 454,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "that this",
+          "start": 479,
+          "duration": 36
+        },
+        {
+          "kind": "caption",
+          "text": "is terrible advice",
+          "start": 515,
+          "duration": 36
+        },
+        {
+          "kind": "caption",
+          "text": "a lot of the times",
+          "start": 551,
+          "duration": 24
+        },
+        {
+          "kind": "caption",
+          "text": "when people are",
+          "start": 575,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "asking me this question",
+          "start": 592,
+          "duration": 26
+        },
+        {
+          "kind": "caption",
+          "text": "it's because they",
+          "start": 618,
+          "duration": 26
+        },
+        {
+          "kind": "caption",
+          "text": "have a",
+          "start": 644,
+          "duration": 10
+        },
+        {
+          "kind": "caption",
+          "text": "fear of judgement",
+          "start": 654,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "and they also",
+          "start": 679,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "have no idea",
+          "start": 696,
+          "duration": 16
+        },
+        {
+          "kind": "caption",
+          "text": "just like",
+          "start": 712,
+          "duration": 12
+        },
+        {
+          "kind": "caption",
+          "text": "where to start",
+          "start": 724,
+          "duration": 19
+        },
+        {
+          "kind": "caption",
+          "text": "like what",
+          "start": 743,
+          "duration": 12
+        },
+        {
+          "kind": "caption",
+          "text": "to talk about",
+          "start": 755,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "they have so",
+          "start": 772,
+          "duration": 12
+        },
+        {
+          "kind": "caption",
+          "text": "many questions",
+          "start": 784,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "so if you have",
+          "start": 801,
+          "duration": 19
+        },
+        {
+          "kind": "caption",
+          "text": "the fear of",
+          "start": 820,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "being judged",
+          "start": 838,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "block everybody",
+          "start": 858,
+          "duration": 26
+        },
+        {
+          "kind": "caption",
+          "text": "until you're comfortable",
+          "start": 884,
+          "duration": 40
+        },
+        {
+          "kind": "caption",
+          "text": "and you're in",
+          "start": 924,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "the like routine",
+          "start": 944,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "and focus on",
+          "start": 967,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "the input and",
+          "start": 987,
+          "duration": 22
+        },
+        {
+          "kind": "caption",
+          "text": "not the output",
+          "start": 1009,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "so now you're",
+          "start": 1032,
+          "duration": 14
+        },
+        {
+          "kind": "caption",
+          "text": "getting over",
+          "start": 1046,
+          "duration": 8
+        },
+        {
+          "kind": "caption",
+          "text": "your fear",
+          "start": 1054,
+          "duration": 8
+        },
+        {
+          "kind": "caption",
+          "text": "of judgment",
+          "start": 1062,
+          "duration": 12
+        },
+        {
+          "kind": "caption",
+          "text": "what do you",
+          "start": 1074,
+          "duration": 14
+        },
+        {
+          "kind": "caption",
+          "text": "make videos about",
+          "start": 1088,
+          "duration": 26
+        },
+        {
+          "kind": "caption",
+          "text": "I would recommend",
+          "start": 1114,
+          "duration": 33
+        },
+        {
+          "kind": "caption",
+          "text": "breaking it",
+          "start": 1147,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "down to like",
+          "start": 1164,
+          "duration": 11
+        },
+        {
+          "kind": "caption",
+          "text": "3-5",
+          "start": 1175,
+          "duration": 42
+        },
+        {
+          "kind": "caption",
+          "text": "brand pillars",
+          "start": 1217,
+          "duration": 26
+        },
+        {
+          "kind": "caption",
+          "text": "brand pillars just things",
+          "start": 1243,
+          "duration": 31
+        },
+        {
+          "kind": "caption",
+          "text": "that you're",
+          "start": 1274,
+          "duration": 10
+        },
+        {
+          "kind": "caption",
+          "text": "interested in",
+          "start": 1284,
+          "duration": 16
+        },
+        {
+          "kind": "caption",
+          "text": "that you can",
+          "start": 1300,
+          "duration": 6
+        },
+        {
+          "kind": "caption",
+          "text": "talk about forever",
+          "start": 1306,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "so yeah if you",
+          "start": 1327,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "found this video",
+          "start": 1347,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "helpful",
+          "start": 1372,
+          "duration": 11
+        },
+        {
+          "kind": "caption",
+          "text": "give me a follow",
+          "start": 1383,
+          "duration": 22
+        },
+        {
+          "kind": "caption",
+          "text": "and I'll catch",
+          "start": 1405,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "you guys in",
+          "start": 1423,
+          "duration": 15
+        },
+        {
+          "kind": "caption",
+          "text": "the next one",
+          "start": 1438,
+          "duration": 20
+        }
+      ],
+      "text_ambiguous": [
+        1243
+      ],
+      "text_labeling_minutes": 47
+    },
+    {
+      "id": "v18",
+      "content_hash": "sha256:bf6099a6af6668d9e7f6263669672d87b7681793694e159b5fc917c435996f9a",
+      "original_sha256": "4be718a479de192cd0ca44050f691921a19d16d37f024e098d76b5d1f0066184",
+      "fps": {
+        "num": 30,
+        "den": 1
+      },
+      "frames": 1128,
+      "resolution": {
+        "width": 720,
+        "height": 1280
+      },
+      "vfr": false,
+      "rights": "",
+      "edit_styles": [],
+      "music": null,
+      "labeled": false,
+      "labeling_minutes": null,
+      "notes": [],
+      "ambiguous": [],
+      "exclude": [],
+      "text_labeled": true,
+      "text_other": [
+        {
+          "kind": "caption",
+          "text": "pretty much every",
+          "start": 273,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "entrepreneur dreams",
+          "start": 294,
+          "duration": 24
+        },
+        {
+          "kind": "caption",
+          "text": "of this moment",
+          "start": 318,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "so I just want",
+          "start": 336,
+          "duration": 16
+        },
+        {
+          "kind": "caption",
+          "text": "to share it with you guys",
+          "start": 352,
+          "duration": 27
+        },
+        {
+          "kind": "caption",
+          "text": "so in",
+          "start": 379,
+          "duration": 22
+        },
+        {
+          "kind": "caption",
+          "text": "1 single day we hit",
+          "start": 401,
+          "duration": 70
+        },
+        {
+          "kind": "caption",
+          "text": "$1216 USD",
+          "start": 471,
+          "duration": 114
+        },
+        {
+          "kind": "caption",
+          "text": "over $1,000",
+          "start": 585,
+          "duration": 31
+        },
+        {
+          "kind": "caption",
+          "text": "in a single day",
+          "start": 616,
+          "duration": 39
+        },
+        {
+          "kind": "caption",
+          "text": "this is honestly",
+          "start": 655,
+          "duration": 42
+        },
+        {
+          "kind": "caption",
+          "text": "just crazy",
+          "start": 697,
+          "duration": 30
+        },
+        {
+          "kind": "caption",
+          "text": "I'm not",
+          "start": 727,
+          "duration": 13
+        },
+        {
+          "kind": "caption",
+          "text": "gonna lie",
+          "start": 740,
+          "duration": 15
+        },
+        {
+          "kind": "caption",
+          "text": "I have full",
+          "start": 755,
+          "duration": 19
+        },
+        {
+          "kind": "caption",
+          "text": "delusional confidence",
+          "start": 774,
+          "duration": 35
+        },
+        {
+          "kind": "caption",
+          "text": "in myself",
+          "start": 809,
+          "duration": 15
+        },
+        {
+          "kind": "caption",
+          "text": "so I knew",
+          "start": 824,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "this day was coming",
+          "start": 845,
+          "duration": 40
+        },
+        {
+          "kind": "caption",
+          "text": "but I just didn't",
+          "start": 885,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "expect it to come so soon",
+          "start": 910,
+          "duration": 37
+        },
+        {
+          "kind": "caption",
+          "text": "UGC is just",
+          "start": 948,
+          "duration": 29
+        },
+        {
+          "kind": "caption",
+          "text": "pure profit",
+          "start": 977,
+          "duration": 29
+        },
+        {
+          "kind": "caption",
+          "text": "this is revenue",
+          "start": 1006,
+          "duration": 37
+        },
+        {
+          "kind": "caption",
+          "text": "so it's",
+          "start": 1043,
+          "duration": 10
+        },
+        {
+          "kind": "caption",
+          "text": "completely different",
+          "start": 1053,
+          "duration": 30
+        },
+        {
+          "kind": "caption",
+          "text": "and I'm out of",
+          "start": 1083,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "time so follow for more",
+          "start": 1100,
+          "duration": 28
+        }
+      ],
+      "text_ambiguous": [],
+      "text_labeling_minutes": 38
+    },
+    {
+      "id": "v19",
+      "content_hash": "sha256:e2d9748cf8c71d27f8200486e7545d454afca2a67c6a88f77f06abdef12ad0f7",
+      "original_sha256": "e03e40c020ab22fb9cb03c7384426bdc935942e7f2d76579fdad1ba832a8c341",
+      "fps": {
+        "num": 24,
+        "den": 1
+      },
+      "frames": 3454,
+      "resolution": {
+        "width": 720,
+        "height": 1280
+      },
+      "vfr": false,
+      "rights": "",
+      "edit_styles": [],
+      "music": null,
+      "labeled": false,
+      "labeling_minutes": null,
+      "notes": [],
+      "ambiguous": [],
+      "exclude": [],
+      "text_labeled": true,
+      "text_other": [
+        {
+          "kind": "caption",
+          "text": "So what's your take?",
+          "start": 0,
+          "duration": 83
+        },
+        {
+          "kind": "caption",
+          "text": "Flip flops in cities are unacceptable.",
+          "start": 83,
+          "duration": 86
+        },
+        {
+          "kind": "caption",
+          "text": "100% agree.",
+          "start": 169,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "I'm so glad.",
+          "start": 192,
+          "duration": 19
+        },
+        {
+          "kind": "caption",
+          "text": "Close ya' toes.",
+          "start": 211,
+          "duration": 33
+        },
+        {
+          "kind": "caption",
+          "text": "Close the toes.",
+          "start": 244,
+          "duration": 15
+        },
+        {
+          "kind": "caption",
+          "text": "Close the do's",
+          "start": 259,
+          "duration": 22
+        },
+        {
+          "kind": "caption",
+          "text": "on the toes.",
+          "start": 281,
+          "duration": 14
+        },
+        {
+          "kind": "caption",
+          "text": "Toes don't the expose.",
+          "start": 295,
+          "duration": 42
+        },
+        {
+          "kind": "caption",
+          "text": "The toes don't need expose.",
+          "start": 337,
+          "duration": 39
+        },
+        {
+          "kind": "caption",
+          "text": "Don't expose the toes.",
+          "start": 376,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "Don't expose the toes because the toes",
+          "start": 396,
+          "duration": 51
+        },
+        {
+          "kind": "caption",
+          "text": "may end up in the throes",
+          "start": 447,
+          "duration": 52
+        },
+        {
+          "kind": "caption",
+          "text": "of--",
+          "start": 499,
+          "duration": 10
+        },
+        {
+          "kind": "caption",
+          "text": "What goes.",
+          "start": 509,
+          "duration": 35
+        },
+        {
+          "kind": "caption",
+          "text": "The toes will end up in the throes of goes",
+          "start": 544,
+          "duration": 55
+        },
+        {
+          "kind": "caption",
+          "text": "And if the throes end up in the toes of what goes,",
+          "start": 599,
+          "duration": 55
+        },
+        {
+          "kind": "caption",
+          "text": "then those who know",
+          "start": 654,
+          "duration": 28
+        },
+        {
+          "kind": "caption",
+          "text": "could never go...",
+          "start": 682,
+          "duration": 27
+        },
+        {
+          "kind": "caption",
+          "text": "...where you might flow",
+          "start": 709,
+          "duration": 33
+        },
+        {
+          "kind": "caption",
+          "text": "And where the rain...",
+          "start": 742,
+          "duration": 37
+        },
+        {
+          "kind": "caption",
+          "text": "...hath not flown.",
+          "start": 779,
+          "duration": 31
+        },
+        {
+          "kind": "caption",
+          "text": "No one knows where the rain flows",
+          "start": 810,
+          "duration": 61
+        },
+        {
+          "kind": "caption",
+          "text": "so don't expose your toes",
+          "start": 871,
+          "duration": 39
+        },
+        {
+          "kind": "caption",
+          "text": "where the rain goes.",
+          "start": 910,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "Here's why I am",
+          "start": 933,
+          "duration": 38
+        },
+        {
+          "kind": "caption",
+          "text": "afraid of exposing the toes",
+          "start": 971,
+          "duration": 33
+        },
+        {
+          "kind": "caption",
+          "text": "Yep",
+          "start": 1004,
+          "duration": 12
+        },
+        {
+          "kind": "caption",
+          "text": "In New York City, anything can happen.",
+          "start": 1016,
+          "duration": 34
+        },
+        {
+          "kind": "caption",
+          "text": "So imagine I'm sitting like this.",
+          "start": 1050,
+          "duration": 32
+        },
+        {
+          "kind": "caption",
+          "text": "Wild.",
+          "start": 1091,
+          "duration": 12
+        },
+        {
+          "kind": "caption",
+          "text": "My toes exposed.",
+          "start": 1103,
+          "duration": 22
+        },
+        {
+          "kind": "caption",
+          "text": "It's already bad.",
+          "start": 1125,
+          "duration": 24
+        },
+        {
+          "kind": "caption",
+          "text": "A guy could come and just suck my toe.",
+          "start": 1149,
+          "duration": 52
+        },
+        {
+          "kind": "caption",
+          "text": "I wasn't expecting that.",
+          "start": 1228,
+          "duration": 22
+        },
+        {
+          "kind": "caption",
+          "text": "I was thinking you were gonna say",
+          "start": 1250,
+          "duration": 37
+        },
+        {
+          "kind": "caption",
+          "text": "the train could shunt or judder",
+          "start": 1287,
+          "duration": 45
+        },
+        {
+          "kind": "caption",
+          "text": "and somebody could step on your toes.",
+          "start": 1332,
+          "duration": 37
+        },
+        {
+          "kind": "caption",
+          "text": "Yes, which would hurt",
+          "start": 1369,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "You've gone straight to the",
+          "start": 1392,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "the danger of sucking.",
+          "start": 1417,
+          "duration": 34
+        },
+        {
+          "kind": "caption",
+          "text": "Well, there's a lotta guys that...",
+          "start": 1451,
+          "duration": 55
+        },
+        {
+          "kind": "caption",
+          "text": "That's wild.",
+          "start": 1524,
+          "duration": 20
+        },
+        {
+          "kind": "caption",
+          "text": "Are you on wikiFeet?",
+          "start": 1544,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "Am I on what?",
+          "start": 1575,
+          "duration": 13
+        },
+        {
+          "kind": "caption",
+          "text": "wikiFeet.",
+          "start": 1588,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "I do not know what that is.",
+          "start": 1611,
+          "duration": 27
+        },
+        {
+          "kind": "caption",
+          "text": "There are photos of feet on the internet.",
+          "start": 1638,
+          "duration": 43
+        },
+        {
+          "kind": "caption",
+          "text": "Okay.",
+          "start": 1681,
+          "duration": 9
+        },
+        {
+          "kind": "caption",
+          "text": "And people rate them.",
+          "start": 1690,
+          "duration": 29
+        },
+        {
+          "kind": "caption",
+          "text": "So it's like an Uber Eats or something?",
+          "start": 1719,
+          "duration": 38
+        },
+        {
+          "kind": "caption",
+          "text": "Yes.",
+          "start": 1757,
+          "duration": 16
+        },
+        {
+          "kind": "caption",
+          "text": "- Tom Hiddleston's feet.",
+          "start": 1778,
+          "duration": 34
+        },
+        {
+          "kind": "caption",
+          "text": "- Oh, Lord",
+          "start": 1778,
+          "duration": 34
+        },
+        {
+          "kind": "caption",
+          "text": "Four point...",
+          "start": 1812,
+          "duration": 27
+        },
+        {
+          "kind": "caption",
+          "text": "4.91.",
+          "start": 1839,
+          "duration": 24
+        },
+        {
+          "kind": "caption",
+          "text": "You have how many photos of your on here?",
+          "start": 1863,
+          "duration": 46
+        },
+        {
+          "kind": "caption",
+          "text": "I've exposed my feet in my work before.",
+          "start": 1909,
+          "duration": 61
+        },
+        {
+          "kind": "caption",
+          "text": "I kind of wanna expose my toes on this episode.",
+          "start": 1970,
+          "duration": 54
+        },
+        {
+          "kind": "caption",
+          "text": "Oh my goodness",
+          "start": 2024,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "I'm gonna show you this one cause I hve",
+          "start": 2042,
+          "duration": 26
+        },
+        {
+          "kind": "caption",
+          "text": "one painted toe.",
+          "start": 2068,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "- Okay, that's unique.",
+          "start": 2091,
+          "duration": 34
+        },
+        {
+          "kind": "caption",
+          "text": "Cause I did it for my daughter.",
+          "start": 2091,
+          "duration": 34
+        },
+        {
+          "kind": "caption",
+          "text": "That's from your daughter?",
+          "start": 2125,
+          "duration": 15
+        },
+        {
+          "kind": "caption",
+          "text": "That's so sweet.",
+          "start": 2140,
+          "duration": 27
+        },
+        {
+          "kind": "caption",
+          "text": "Can you do this?",
+          "start": 2167,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "oh my god.",
+          "start": 2194,
+          "duration": 16
+        },
+        {
+          "kind": "caption",
+          "text": "100%...",
+          "start": 2218,
+          "duration": 22
+        },
+        {
+          "kind": "caption",
+          "text": "...no.",
+          "start": 2240,
+          "duration": 11
+        },
+        {
+          "kind": "caption",
+          "text": "Sorry.",
+          "start": 2251,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "Never seen that.",
+          "start": 2269,
+          "duration": 21
+        },
+        {
+          "kind": "caption",
+          "text": "Where you from?",
+          "start": 2318,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "Maine.",
+          "start": 2336,
+          "duration": 18
+        },
+        {
+          "kind": "caption",
+          "text": "They don't have this in Maine?",
+          "start": 2354,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "My dad could raise one eyebrow,",
+          "start": 2377,
+          "duration": 34
+        },
+        {
+          "kind": "caption",
+          "text": "but he couldn't separate his toe/",
+          "start": 2411,
+          "duration": 30
+        },
+        {
+          "kind": "caption",
+          "text": "How do you feel about exposing your toes?",
+          "start": 2441,
+          "duration": 49
+        },
+        {
+          "kind": "caption",
+          "text": "Only when the cameras are rolling",
+          "start": 2490,
+          "duration": 35
+        },
+        {
+          "kind": "caption",
+          "text": "Me? I'm like, expose your toes",
+          "start": 2565,
+          "duration": 35
+        },
+        {
+          "kind": "caption",
+          "text": "on the beach...",
+          "start": 2600,
+          "duration": 24
+        },
+        {
+          "kind": "caption",
+          "text": "...and nowhere else.",
+          "start": 2624,
+          "duration": 16
+        },
+        {
+          "kind": "caption",
+          "text": "I agree.",
+          "start": 2640,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "But that was very brave.",
+          "start": 2657,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "And also, can I say, I think",
+          "start": 2682,
+          "duration": 47
+        },
+        {
+          "kind": "caption",
+          "text": "you've got beautiful feet, man.",
+          "start": 2729,
+          "duration": 25
+        },
+        {
+          "kind": "caption",
+          "text": "Thank you ssso much.",
+          "start": 2754,
+          "duration": 39
+        },
+        {
+          "kind": "caption",
+          "text": "You get extra points because",
+          "start": 2793,
+          "duration": 36
+        },
+        {
+          "kind": "caption",
+          "text": "Your daughter painted your big toe",
+          "start": 2829,
+          "duration": 43
+        },
+        {
+          "kind": "caption",
+          "text": "It feels so good to hear this.",
+          "start": 2872,
+          "duration": 27
+        },
+        {
+          "kind": "caption",
+          "text": "Dad points.",
+          "start": 2899,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "God, it feels good to hear this.",
+          "start": 2922,
+          "duration": 30
+        },
+        {
+          "kind": "caption",
+          "text": "World's greatest dad.",
+          "start": 2952,
+          "duration": 37
+        },
+        {
+          "kind": "caption",
+          "text": "This episode would go so viral",
+          "start": 3003,
+          "duration": 33
+        },
+        {
+          "kind": "caption",
+          "text": "if I sucked your toe.",
+          "start": 3036,
+          "duration": 30
+        },
+        {
+          "kind": "caption",
+          "text": "I'm not gonna do it.",
+          "start": 3073,
+          "duration": 23
+        },
+        {
+          "kind": "caption",
+          "text": "I'm not gonna do it.",
+          "start": 3099,
+          "duration": 17
+        },
+        {
+          "kind": "caption",
+          "text": "I'm sort of disappointed",
+          "start": 3116,
+          "duration": 24
+        },
+        {
+          "kind": "caption",
+          "text": "and relieved at the same time.",
+          "start": 3140,
+          "duration": 28
+        },
+        {
+          "kind": "caption",
+          "text": "That I'm not gonna do it?",
+          "start": 3168,
+          "duration": 32
+        },
+        {
+          "kind": "caption",
+          "text": "There's more relief than disappointment/",
+          "start": 3210,
+          "duration": 33
+        }
+      ],
+      "text_ambiguous": [],
+      "text_labeling_minutes": 98
+    },
+    {
+      "id": "v20",
+      "content_hash": "sha256:d447ed18de5882ef9d8639bed315676942458e22f07d60deae038860f8c6bc30",
+      "original_sha256": "8ee60520c239c9139643519bed9b97118e6e2afcb93f1679008d4b2a3437b266",
+      "fps": {
+        "num": 30,
+        "den": 1
+      },
+      "frames": 1770,
+      "resolution": {
+        "width": 720,
+        "height": 1280
+      },
+      "vfr": false,
+      "rights": "",
+      "edit_styles": [],
+      "music": null,
+      "labeled": false,
+      "labeling_minutes": null,
+      "notes": [],
+      "ambiguous": [],
+      "exclude": [],
+      "text_labeled": true,
+      "text_other": [],
+      "text_ambiguous": [],
+      "text_labeling_minutes": 50
     }
   ]
 }
