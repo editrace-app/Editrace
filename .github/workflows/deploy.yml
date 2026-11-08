@@ -36,6 +36,8 @@ env:
   VERCEL_CLI_VERSION: 62.2.0
   # Pinned for the same reason: the migration steps hold the database password.
   SUPABASE_CLI_VERSION: 2.120.0
+  # Pinned for the same reason: the Modal deploy steps hold a Modal token, and `modal deploy` runs the app's code.
+  MODAL_CLI_VERSION: 1.6.1
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 
@@ -144,6 +146,27 @@ jobs:
           supabase link --project-ref "$SUPABASE_PROJECT_REF"
           supabase db push --dry-run # the pending list stays in the log, for audit
           supabase db push
+      # Workers go to the Modal environment named in this job, hardcoded so a mistyped variable can't point staging at prod.
+      # Migrations ran first and Modal comes before the web deploy, so a failure stops the job before the commit gets a `deployed/staging` status.
+      # With no Modal app in the repo yet there is nothing to deploy and no token is needed, so the step says so and passes.
+      # The token decides the workspace: this job's token belongs to the staging Modal workspace and can't reach prod (ADR 0004).
+      # `--env main` is the workspace's only environment, written out so a stray MODAL_ENVIRONMENT can't redirect the deploy.
+      - name: Deploy workers to Modal (staging)
+        env:
+          MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+          MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+        run: |
+          if [ ! -f workers/modal_app.py ]; then
+            echo "::notice title=No workers to deploy::workers/modal_app.py doesn't exist yet."
+            exit 0
+          fi
+          if [ -z "$MODAL_TOKEN_ID" ] || [ -z "$MODAL_TOKEN_SECRET" ]; then
+            echo "::error::MODAL_TOKEN_ID and MODAL_TOKEN_SECRET must be set on this GitHub environment, from its own Modal workspace (docs/environments.md#modal)."
+            exit 1
+          fi
+          python3 -m venv "$RUNNER_TEMP/modal"
+          "$RUNNER_TEMP/modal/bin/pip" install --quiet "modal==$MODAL_CLI_VERSION"
+          "$RUNNER_TEMP/modal/bin/modal" deploy --env main workers/modal_app.py
       - run: npm install --global "vercel@$VERCEL_CLI_VERSION"
       # Staging is a custom environment in editrace-np with its own env vars; the staging domain follows its latest deploy.
       - run: vercel pull --yes --environment=staging --token="$VERCEL_TOKEN"
@@ -261,6 +284,26 @@ jobs:
           supabase link --project-ref "$SUPABASE_PROJECT_REF"
           supabase db push --dry-run # the pending list stays in the log, for audit
           supabase db push
+      # Workers go to the Modal environment named in this job, hardcoded so a mistyped variable can't point staging at prod.
+      # Runs the promoted commit's app file with the prod token. That commit is already on main (the pick step checks), so this is the code being released.
+      # With no Modal app in the repo yet there is nothing to deploy and no token is needed, so the step says so and passes.
+      # The token decides the workspace: this job's token belongs to the prod Modal workspace (ADR 0004). `--env main` as in staging.
+      - name: Deploy workers to Modal (prod)
+        env:
+          MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+          MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+        run: |
+          if [ ! -f workers/modal_app.py ]; then
+            echo "::notice title=No workers to deploy::workers/modal_app.py doesn't exist yet."
+            exit 0
+          fi
+          if [ -z "$MODAL_TOKEN_ID" ] || [ -z "$MODAL_TOKEN_SECRET" ]; then
+            echo "::error::MODAL_TOKEN_ID and MODAL_TOKEN_SECRET must be set on this GitHub environment, from its own Modal workspace (docs/environments.md#modal)."
+            exit 1
+          fi
+          python3 -m venv "$RUNNER_TEMP/modal"
+          "$RUNNER_TEMP/modal/bin/pip" install --quiet "modal==$MODAL_CLI_VERSION"
+          "$RUNNER_TEMP/modal/bin/modal" deploy --env main workers/modal_app.py
       - run: npm install --global "vercel@$VERCEL_CLI_VERSION"
       - run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
       - run: vercel build --prod --token="$VERCEL_TOKEN"
