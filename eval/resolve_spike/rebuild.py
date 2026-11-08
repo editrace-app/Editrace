@@ -9,7 +9,7 @@
 Run from the repo root, with OpenTimelineIO added for the run (it isn't a project dependency yet; #76 adds it):
 
     uv run --extra cuts --with opentimelineio python eval/resolve_spike/rebuild.py build --out OUT [v03 v10 v15]
-    uv run --extra cuts --with opentimelineio python eval/resolve_spike/rebuild.py diff --out OUT RESOLVE_EXPORT.otio
+    uv run --extra cuts --with opentimelineio python eval/resolve_spike/rebuild.py diff --out OUT --video v03 RESOLVE_EXPORT.otio
 
 The timelines reference the private golden videos by absolute path, so OUT stays outside the repo.
 """
@@ -17,6 +17,7 @@ The timelines reference the private golden videos by absolute path, so OUT stays
 from __future__ import annotations
 
 import argparse
+import hashlib
 import itertools
 import json
 import sys
@@ -37,6 +38,19 @@ TOLERANCE = 1  # #5's criterion: cuts within 1 frame
 def source_of(vid: str) -> dict:
     """The video's `source` section from its golden label: frame rate and duration as labeled."""
     return json.loads((GOLDEN / "labels" / f"{vid}.json").read_text())["source"]
+
+
+def check_video(vid: str) -> None:
+    """Refuse a video whose file isn't the one the manifest recorded, so a swapped file can't give plausible but
+    wrong evidence."""
+    manifest = json.loads((GOLDEN / "manifest.json").read_text())
+    expected = next(v["content_hash"] for v in manifest["videos"] if v["id"] == vid)
+    h = hashlib.sha256()
+    with (GOLDEN / "videos" / f"{vid}.mp4").open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    if f"sha256:{h.hexdigest()}" != expected:
+        raise SystemExit(f"{vid}.mp4 doesn't match manifest.json's content_hash")
 
 
 def detect(vid: str) -> dict:
@@ -81,6 +95,7 @@ def donor_shots(target: str, rate: Fraction) -> list[tuple[int, str, int]]:
         fps = data["source"]["fps"]
         if Fraction(fps["num"], fps["den"]) != rate:
             continue
+        check_video(vid)
         track = data["tracks"][0]
         blocked = [
             (t["range"]["start"], t["range"]["start"] + t["range"]["duration"])
@@ -113,16 +128,23 @@ def fill_from_donors(
     long as itself, from a different video than the slot before, preferring shots not used yet; a slot longer than
     any donor shot takes several, joined. Deterministic, so a rebuild gives the same timeline."""
     shots = sorted(donor_shots(target, rate), key=lambda s: (s[1], s[2]))
+    if not shots:
+        raise SystemExit(
+            f"no donor shots at {rate} fps for {target}: no other golden video on disk has that rate"
+        )
     used: set[tuple[str, int]] = set()
     previous = None
     fills = []
     for slot in slots:
         need, pieces = slot["range"]["duration"], []
         while need:
-            fits = [s for s in shots if s[0] >= need and s[1] != previous]
-            pool = fits or [
-                max((s for s in shots if s[1] != previous), key=lambda s: s[0])
-            ]
+            others = [s for s in shots if s[1] != previous]
+            if not others:
+                raise SystemExit(
+                    f"{target} {slot['id']}: every donor shot is from {previous}, the previous slot's video"
+                )
+            fits = [s for s in others if s[0] >= need]
+            pool = fits or [max(others, key=lambda s: s[0])]
             fresh = [s for s in pool if (s[1], s[2]) not in used] or pool
             length, vid, start = (
                 min(fresh, key=lambda s: (s[0], s[1], s[2])) if fits else fresh[0]
@@ -148,6 +170,10 @@ def build_timeline(
     source = source_of(vid)
     rate = Fraction(source["fps"]["num"], source["fps"]["den"])
     slots = partial["tracks"][0]["slots"]
+    empty = [s["id"] for s in slots if s["range"]["duration"] <= 0]
+    if empty:
+        # A zero-length slot would make no clip and silently vanish from the timeline.
+        raise SystemExit(f"{vid}: zero-length slots {empty}")
     if fill == "donors":
         fills = fill_from_donors(vid, slots, rate)
     else:
@@ -219,19 +245,21 @@ def build_timeline(
 
 
 def cut_frames(timeline: otio.schema.Timeline, rate: Fraction) -> list[int]:
-    """Cut frames on the first video track, in source frames from the timeline's start: each clip's start except
-    the first. Gaps count as time, so a dropped or shifted clip shows up as moved cuts."""
+    """Cut frames on the first video track, in frames from the track's start: the start of every clip that doesn't
+    start at 0. Gaps count as time, so a dropped or shifted clip shows up as moved cuts.
+
+    `range_of_child()` is already relative to the track, so the timeline's start timecode (Resolve exports
+    01:00:00:00 by default) must not be subtracted again."""
     track = next(t for t in timeline.tracks if t.kind == otio.schema.TrackKind.Video)
-    start = timeline.global_start_time or rational_time(0, rate)
     frames = []
     for item in track:
         if isinstance(item, otio.schema.Clip):
-            at = track.range_of_child(item).start_time
-            frames.append(
-                round(at.value_rescaled_to(float(rate)))
-                - round(start.value_rescaled_to(float(rate)))
+            at = round(
+                track.range_of_child(item).start_time.value_rescaled_to(float(rate))
             )
-    return sorted(frames)[1:]
+            if at != 0:
+                frames.append(at)
+    return sorted(frames)
 
 
 def compare(expected: list[int], got: list[int]) -> dict:
@@ -278,9 +306,7 @@ def main() -> None:
         help="the build's folder, holding the worker's cuts",
     )
     d.add_argument("export", type=Path, help="the .otio Resolve exported")
-    d.add_argument(
-        "--video", help="golden id, if the export's file name doesn't start with it"
-    )
+    d.add_argument("--video", required=True, help="golden id of the export, e.g. v03")
     args = parser.parse_args()
 
     if args.cmd == "build":
@@ -290,6 +316,7 @@ def main() -> None:
             )
         args.out.mkdir(parents=True, exist_ok=True)
         for vid in args.videos:
+            check_video(vid)
             partial = detect(vid)
             (args.out / f"{vid}.cuts.json").write_text(json.dumps(partial, indent=1))
             timeline, joins = build_timeline(vid, partial, args.fill)
@@ -314,10 +341,15 @@ def main() -> None:
             )
         return
 
-    vid = args.video or args.export.name.split(".")[0].split("_")[0].split(" ")[0]
+    vid = args.video
     source = source_of(vid)
     rate = Fraction(source["fps"]["num"], source["fps"]["den"])
-    partial = json.loads((args.out / f"{vid}.cuts.json").read_text())
+    cuts_file = args.out / f"{vid}.cuts.json"
+    if not cuts_file.exists():
+        parser.error(
+            f"{cuts_file} not found: run build for {vid} with this --out first"
+        )
+    partial = json.loads(cuts_file.read_text())
     joins_file = args.out / f"{vid}.joins.json"
     joins = json.loads(joins_file.read_text()) if joins_file.exists() else []
     expected = sorted([c["frame"] for c in partial["tracks"][0]["cuts"]] + joins)

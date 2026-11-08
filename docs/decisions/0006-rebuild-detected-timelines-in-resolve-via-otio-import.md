@@ -23,7 +23,7 @@ The review ran in two rounds, because the first round couldn't fail:
 
 ## Findings
 
-**1. Import is frame-exact (AC 1: pass).** Resolve's OTIO export of each imported timeline was diffed against the worker's cuts. All **88 of 88 cuts were on the exact frame**, with none off by one. Every clip also kept its source in-point, with no offset.
+**1. Import is frame-exact (AC 1: pass).** Resolve's OTIO export of each imported timeline was diffed against the worker's cuts. All **88 of 88 cuts were on the exact frame**, with none off by one. Source in-points also matched, but that was checked outside `rebuild.py`, whose `diff` compares cut positions only.
 
 | Video | Detected cuts | Within ±1 frame | Exact | Source in-points match |
 |---|---|---|---|---|
@@ -68,12 +68,14 @@ The review ran in two rounds, because the first round couldn't fail:
 
 **Go.** Editrace hands detected timelines to DaVinci Resolve as **OTIO files, with media referenced by plain OS paths**, not `file://` URLs. The import is frame-exact, and a donor-filled rebuild of v03, v10 and v15 kept the original's feel, with every false cut in the edit flagged for review. The one false cut that hurt the feel, a fade read as a cut, belongs to transition detection (#23), not to this route.
 
+The import result is machine-checked and stands. The feel result was reviewed by the author alone, so it stays **provisional until a design partner repeats the donor review**.
+
 ## Consequences
 
 - **Good:** Phase 0's file-based gate is answered on real videos. #76 and #9 can build on OTIO knowing Resolve keeps every frame.
-- **Bad / accepted trade-offs:** templates still carry low-confidence false cuts and end-card slots, and the user has to review them. The flags make the false cuts in the edit visible. End cards aren't reliably flagged.
+- **Bad / accepted trade-offs:** templates still carry low-confidence false cuts and end-card slots, and the user has to review them. The flags make the false cuts in the edit visible. End cards aren't reliably flagged: v03's and v15's come through at 0.72–0.93 confidence, so #76 must not claim the review flags cover them.
 - **One-way or two-way door:** two-way. The exporter could switch to FCPXML or live control later. The cuts are stored in the template, not in OTIO.
-- **Follow-up work:** #76 / #9 write plain media paths for Resolve on Windows. Share these findings with #29. #353 corrects the golden set. #23 (transition classification, Phase 2) doesn't yet cover fades to or from black, or absorbing a false cut inside a fade, as at v10 259; that's been suggested on #23.
+- **Follow-up work:** #76 needs a media-path writer per platform: "plain path, not `file://`" is Windows-only evidence. Share these findings with #29. #353 corrects the golden set. #23 (transition classification, Phase 2) doesn't yet cover fades to or from black, or absorbing a false cut inside a fade, as at v10 259; that's been suggested on #23.
 - **Affected:** exporter design (#76, #9), golden labels (#353). No schema, database or MCP change.
 
 ## How we'll know
@@ -82,7 +84,7 @@ The exporter's own Resolve test (#9) keeps every cut within ±1 frame, the same 
 
 ## Open questions
 
-- **Reviewer independence** (owner: @calvinkafaiyuen). The Phase 0 gate says an editor confirms the feel. This review was done by the author, not an outside editor. Is that enough for Phase 0, or should a design partner repeat the donor review?
+- **Reviewer independence** (owner: @calvinkafaiyuen). The Phase 0 gate says an editor confirms the feel. This review was done by the author, not an outside editor, so the feel result is provisional (Decision) until a design partner repeats the donor review.
 - **Coverage** (owner: @calvinkafaiyuen). There were no missed cuts in these three videos, so the review never had to judge one. A video with known misses would test that side.
 - **Donor footage is a stand-in.** It's other creators' shots, not a user's own footage. Real footage might make wrong cuts more or less noticeable.
 - **macOS and Premiere/Final Cut** weren't tested. #9 covers them.
