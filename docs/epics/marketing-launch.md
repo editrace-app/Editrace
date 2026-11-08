@@ -66,7 +66,7 @@ These match #47's exit criteria (10 interviews, 5+ design partners).
 - **Labels:** `story`, `type:build`, `area:marketing`, `product`
 - **Owner:** @anthonythanpoovong · **Phase:** 0
 - **Context:** every channel needs a consistent identity.
-- **Scope:** logo (wordmark + icon), color palette, 1–2 fonts, profile picture and banner exports for TikTok, Instagram, YouTube, X and LinkedIn. DIY in Figma (free).
+- **Scope:** logo (wordmark + icon), color palette, 1–2 fonts, profile picture and banner exports for TikTok, Instagram, X and LinkedIn. DIY in Figma (free).
 - **Acceptance criteria:**
   - [ ] Logo in SVG + PNG (light and dark), icon legible at 32 px
   - [ ] Brand kit (colors, fonts, usage) stored in a shared place and linked from the wiki
@@ -76,11 +76,10 @@ These match #47's exit criteria (10 interviews, 5+ design partners).
 - **Labels:** `story`, `type:build`, `area:marketing`, `product`
 - **Owner:** @anthonythanpoovong · **Phase:** 0
 - **Context:** the audience is on TikTok and Reels; agencies also use LinkedIn and X.
-- **Scope:** claim `@editrace` (or the closest available, the same everywhere) on TikTok, Instagram, YouTube, X and LinkedIn. Set up business/creator profiles with the brand kit and a link in bio to the waitlist. Create a UTM link per channel. Add a "how did you hear about us" field to the waitlist (#54).
+- **Scope:** claim `@editrace` (or the closest available, the same everywhere) on TikTok, Instagram, X and LinkedIn. Set up business/creator profiles with the brand kit. The UTM-tagged waitlist link in each bio is part of #54.
 - **Acceptance criteria:**
-  - [ ] Same handle (or documented variants) on all 5 platforms, with 2FA on and shared credentials in a password manager
-  - [ ] Each channel links to the waitlist with its own UTM tag, and signups show their source
-- **Depends on:** story 1, #54
+  - [ ] Same handle (or documented variants) on all 4 platforms, with 2FA on and shared credentials in a password manager
+- **Depends on:** story 1
 
 ### 3. UGC agency outreach
 - **Labels:** `story`, `type:research`, `area:marketing`, `product`
@@ -116,7 +115,7 @@ These match #47's exit criteria (10 interviews, 5+ design partners).
 - **Labels:** `story`, `type:build`, `area:marketing`, `product`
 - **Owner:** @anthonythanpoovong · **Phase:** 1
 - **Context:** organic reach needs a steady, sustainable cadence from one person.
-- **Scope:** a content calendar and the first 10 posts. Formats: edit breakdowns (with permitted clips), CapCut tips, build-in-public updates. **2 posts/week** on TikTok and Reels, cross-posted to YouTube Shorts.
+- **Scope:** a content calendar and the first 10 posts. Formats: edit breakdowns (with permitted clips), CapCut tips, build-in-public updates. **2 posts/week** on TikTok and Reels.
 - **Acceptance criteria:**
   - [ ] 10 posts published on schedule, all following the footage rule
   - [ ] Monthly review of views, profile clicks and waitlist signups per channel (UTM)
