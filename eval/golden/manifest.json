@@ -98,7 +98,8 @@
       "labeling_minutes": 7,
       "notes": [
         "talking head picture-in-picture over still background images, frames 0-218: each background change labeled as a cut. Changes inside the box (new clip, time skip, move, resize, appear/disappear) not labeled (rule 11). Cut at 219 where the section ends",
-        "platform end card: frames 931-1051 (1 black frame + Instagram end card), not part of the edit, unlabeled. Exclude from scoring"
+        "platform end card: frames 931-1051 (1 black frame + Instagram end card), not part of the edit, unlabeled. Exclude from scoring",
+        "label fix 2026-11-07: added cut at 164, a background change (desk to rooftop) in the picture-in-picture section that was missed at labeling. Found in the #5 Resolve review and checked frame by frame; 1 label changed"
       ],
       "ambiguous": [],
       "exclude": [
