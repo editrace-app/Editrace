@@ -177,7 +177,21 @@ Work is organized as **Epic → Story → Subtask**, using GitHub sub-issues and
 **Foundations:** observability + cost guardrails (#50), product analytics (#51, plan in [`analytics-plan.md`](analytics-plan.md))
 **GTM:** design partner program (#55), terms/privacy/retention (#56), launch demo video (#118), content engine (#119), Meta Business + Pixel with no spend (#120)
 
-**Gate:** A new user uploads a video, sees a breakdown, and from Claude Desktop applies it to Resolve or FCP in under 10 minutes. At Phase 1 exit (or after 200 reviewed templates, if sooner), run [ADR 0003](decisions/0003-use-pyscenedetect-adaptive-for-cut-detection.md)'s revisit check on the cut-edit logs from #7 and #18.
+**Schedule (pilot plan, 2026-11-08):** two-week sprints that start on a Thursday and end on a Wednesday. The aim is a first design partner using it by the end of Sprint 4, then wider launch after MVP Beta. MCP, the Bridge and the assistant are scheduled after MVP Beta; they stay in Phase 1 and 2 scope below, and the Key Decisions above are unchanged.
+
+| Sprint | Dates | Focus |
+|---|---|---|
+| 3 | 10/29 – 11/11 | Finish the workers in flight (#11, #12, #13, #14), the Clef-omni spike (#298), golden eval in CI (#344), the Resolve rebuild spike (#5, the exporter depends on it), interviews, legal consult and outreach (#20, #21, #116, #117) |
+| 4 | 11/12 – 11/25 | A partner opens a template from their own video in their own editor; the team runs the workers by hand. Exporter for one editor (#9, #76–#78), upload and jobs backend (#57–#59, #320), review-flag ADR (#343), analytics `track()` (#295), design partner program and terms (#55, #56) |
+| 5 | 11/26 – 12/9 | Partners upload, see the breakdown and download it themselves: upload flow and live status (#16, #60), timeline and export buttons (#61, #64), ontology (#31, #82–#85), motion (#8), more golden videos (#52) |
+| 6 | 12/10 – 12/23 | What partners asked for: breakdown page (#18), cut precision 0.90 (#311), transitions if asked (#23), analytics and Meta setup (#51, #296, #120), landing page and waitlist (#54, #213, #287), result store (#301) |
+| 7 | 12/24 – 1/6 | Payment (#19, #79–#81), upload history (#17), launch demo and content (#118, #119), the pilot gate (#318), GitHub App for the board (#341) |
+| MVP Beta Testing | 1/7 – 1/20 | Wider launch: Meta ads test (#121); color/LUT (#24) and the CapCut spike (#6) only if partners ask |
+| Post-Beta 1–5 | 1/21 – 3/31 | 1: MCP server (#27, #69–#71) and the live-control spike (#29). 2: export tool, settings page, CapCut exporter, Bridge (#72, #37, #10, #32, #73–#75). 3: editor adapters (#33–#36). 4: assistant (#30, #38, #22, #39). 5: Phase 3 (#25, #26, #28, #99–#105) |
+
+**Pilot gate (#318):** A new user uploads a video, sees a breakdown, downloads the exported file and opens it in their editor in under 10 minutes, in 3 of 3 timed runs. This is the gate before MVP Beta.
+
+**Full gate (#354):** A new user uploads a video, sees a breakdown, and from Claude Desktop applies it to Resolve or FCP in under 10 minutes. At Phase 1 exit (or after 200 reviewed templates, if sooner), run [ADR 0003](decisions/0003-use-pyscenedetect-adaptive-for-cut-detection.md)'s revisit check on the cut-edit logs from #7 and #18.
 
 ### Phase 2: Assistant & more editors
 - Docs ingestion pipeline (#38), RAG assistant (#22), eval harness (#39); `ask_about_template` MCP tool
@@ -223,6 +237,7 @@ Work is organized as **Epic → Story → Subtask**, using GitHub sub-issues and
 
 ## Open Questions
 
+- **Editor targets before Beta:** build the exporter for the one editor the design partners use first (#9 covers Resolve/Premiere/FCP, #10 CapCut) and the others as partners ask. Decided from the #20 interviews and the first partner sessions in Sprint 4.
 - Bridge language: Python (Resolve API is Python) or Node (MCP SDK, UXP)? Decided in #29.
 - Windows support timing for the Bridge.
 - Should the assistant be available to trial users, and with what quota?
