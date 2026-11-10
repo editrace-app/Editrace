@@ -6,8 +6,9 @@ SELECT plan(22);
 -- it proves the table itself is fully locked down (no insert, select,
 -- update or delete policy for anon/authenticated) and that the only
 -- way in is the join_waitlist() RPC, which bypasses RLS internally, is
--- service_role only (#153 review, blocker 3), and never reveals
--- whether an email was new or already registered.
+-- service_role only (#153 review, blocker 3), and never lets the
+-- browser-facing response reveal whether an email was new or already
+-- registered -- its boolean return (#287) is for the caller alone.
 
 -- 1. anon cannot insert directly into the table (no insert policy).
 SET LOCAL ROLE anon;
@@ -44,10 +45,13 @@ SELECT throws_ok(
 RESET ROLE;
 SET LOCAL ROLE service_role;
 
--- 4. service_role can join the waitlist via the RPC.
-SELECT lives_ok(
+-- 4. service_role can join the waitlist via the RPC, which reports a new row was inserted (#287: this is
+--    what the web app's route uses to decide whether to fire a team-notification email -- see the
+--    migration comment on join_waitlist for why that doesn't weaken the anti-enumeration guarantee).
+SELECT results_eq(
   $$ select public.join_waitlist('Ada', 'Lovelace', 'ada@example.com', 'creator', 'tiktok', '203.0.113.5') $$,
-  'service_role can join the waitlist via join_waitlist()'
+  ARRAY[true],
+  'service_role can join the waitlist via join_waitlist(), which reports the row as new'
 );
 
 -- 5. Invalid email is rejected.
@@ -67,15 +71,17 @@ SELECT throws_ok(
 );
 
 -- 7. A duplicate (case-insensitive) email is silently absorbed: no
---    error, no distinguishable response, so the RPC can never be used
---    to probe which emails are already on the list. It still reaches
+--    error, no distinguishable *HTTP* response, so the RPC can never be used
+--    to probe which emails are already on the list from the browser. It still reaches
 --    the rate-limit trigger and logs an attempt (#153 review, F5): the
 --    insert into waitlist_signups is what gets discarded by ON CONFLICT
 --    DO NOTHING, not the whole statement, so the attempt the trigger
---    already recorded commits regardless.
-SELECT lives_ok(
+--    already recorded commits regardless. The false return (#287) is only ever read by
+--    our own trusted route, to skip the team notification -- never forwarded to the browser.
+SELECT results_eq(
   $$ select public.join_waitlist('Ada', 'Lovelace', 'ADA@example.com', 'creator', 'tiktok', '203.0.113.5') $$,
-  'a duplicate email via join_waitlist() is silently ignored, not rejected'
+  ARRAY[false],
+  'a duplicate email via join_waitlist() is silently ignored, not rejected, and reported as not-new'
 );
 
 -- 8. first_name over the 100-char cap is rejected.

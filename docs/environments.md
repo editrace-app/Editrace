@@ -85,15 +85,13 @@ Each secret lives in **one** place. Don't copy values between systems except thr
 | `CLAUDE_CODE_OAUTH_TOKEN` | GitHub repo secret | Armour review and `@claude` |
 | `DISCORD_REVIEW_WEBHOOK` | GitHub repo secret | Discord review notifications |
 | `DISCORD_ALERTS_WEBHOOK` | GitHub repo secret | Spend and error alerts in `#alerts` ([observability.md](observability.md#spend-alerts)) |
-| `NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SERVICE_ROLE_KEY` | Vercel project env vars, per environment | Web app |
-| `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET` | GitHub repo secrets (deploys) and Modal (runtime) | Workers |
-| `ANTHROPIC_API_KEY`, `STRIPE_*` | Vercel project env vars, per environment | Web app and assistant |
 | `APP_ENV` | Vercel project env vars (`preview`, `staging`, `prod`) and Modal secrets, per environment | Logs and Sentry events ([observability.md](observability.md)) |
 | `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN` | Vercel project env vars (web DSN) and Modal secrets (workers DSN) | Error tracking |
 | `SENTRY_AUTH_TOKEN` | GitHub repo secret | Source map upload in `deploy.yml`, once the web SDK is set up |
 | `NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SERVICE_ROLE_KEY` | Vercel project env vars: `editrace-np` (Preview and `staging` environments), `editrace-prod` (Production) | Web app |
 | `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET` | GitHub repo secrets (deploys) and Modal (runtime) | Workers |
 | `ANTHROPIC_API_KEY`, `STRIPE_*` | Vercel project env vars: `editrace-np` (Preview and `staging` environments), `editrace-prod` (Production) | Web app and assistant |
+| `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `WAITLIST_NOTIFY_EMAIL` | Vercel project env vars: `editrace-np` (`staging` environment), `editrace-prod` (Production). Not set on Preview, same as the Supabase variables, so the notification silently no-ops there | `/api/waitlist`'s team-signup notification (#287) |
 
 Rules:
 

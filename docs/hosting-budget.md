@@ -15,7 +15,8 @@ What we actually pay today, and the known next step up for each tool, so the tea
 | Modal | Starter (pay-as-you-go) | $0 base | No fixed monthly fee; GPU workers aren't deployed yet (`docs/plan.md`, #163). Once running, billed per second: roughly $2.50–$4/GPU-hour depending on GPU class (H100 ≈ $3.95/hr, A100 80GB ≈ $2.50/hr), plus CPU/memory. |
 | Domain | — | $0 | No domain purchased yet; the site runs on `*.vercel.app` subdomains. |
 | Analytics | In-house | $0 | Built on our own Supabase Postgres, no vendor (`analytics-plan.md`) — a deliberate choice to avoid a per-MAU bill and a second data processor. |
-| Email (transactional) | Supabase Auth built-in | $0 | Password reset / sign-up emails ride Supabase Auth's own sender. No ESP (Resend/Postmark/SendGrid) chosen yet; the coming-soon waitlist form doesn't send email at all (see `supabase/migrations/20261023050442_create_waitlist_signups.sql`). |
+| Email (transactional) | Supabase Auth built-in | $0 | Password reset / sign-up emails ride Supabase Auth's own sender. No ESP (Resend/Postmark/SendGrid) chosen yet for that. |
+| Email (waitlist team notification) | Gmail SMTP | $0 | #287: a new `waitlist_signups` row sends one email to `editrace.co@gmail.com` via that same Gmail account's SMTP and an app password -- free at this volume (a handful of signups/day), and separate from the ESP decision above, which is specifically about Supabase Auth's production email volume. |
 | Stripe | Pay-as-you-go | $0 fixed | Transaction fees only (~2.9% + $0.30/charge) once billing (#19) ships. No monthly fee. |
 
 **Today's fixed total: ~$20/month** (Vercel Pro only). Everything else is $0 until usage or a feature (billing, a bought domain, higher email volume, GPU workers) forces a paid tier.

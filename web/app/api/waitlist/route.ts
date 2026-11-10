@@ -1,6 +1,7 @@
-import { ipAddress } from "@vercel/functions";
+import { ipAddress, waitUntil } from "@vercel/functions";
 import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient } from "../../../lib/supabase/admin";
+import { notifyTeamOfSignup } from "../../../lib/notify-signup";
 import { validateSignup, type WaitlistSignup } from "../../../lib/waitlist";
 
 export const runtime = "nodejs";
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
   // and five signups would lock everyone out, so make that loud instead of silent.
   if (ip === null && process.env.VERCEL) console.error("waitlist: no client IP from ipAddress() on Vercel");
 
-  const { error } = await createAdminClient().rpc("join_waitlist", {
+  const { data: inserted, error } = await createAdminClient().rpc("join_waitlist", {
     p_first_name: signup.firstName.trim(),
     p_last_name: signup.lastName.trim(),
     p_email: signup.email.trim(),
@@ -48,7 +49,22 @@ export async function POST(request: NextRequest) {
     p_ip_address: ip,
   });
 
-  if (!error) return NextResponse.json({ ok: true });
+  if (!error) {
+    // #287: only on a genuinely new row, never a duplicate absorbed by ON CONFLICT DO NOTHING. waitUntil()
+    // lets this finish after the response below is sent, without making the visitor wait on an email; the
+    // .catch() means a failed notification never turns a successful signup into an error response.
+    if (inserted) {
+      waitUntil(
+        notifyTeamOfSignup({
+          firstName: signup.firstName.trim(),
+          lastName: signup.lastName.trim(),
+          role: signup.role,
+          source: signup.source,
+        }).catch((err: unknown) => console.error("waitlist: signup notification failed", err)),
+      );
+    }
+    return NextResponse.json({ ok: true });
+  }
   if (error.code === "EDR01") return NextResponse.json({ code: "EDR01" }, { status: 429 });
   // Keep Postgres' code and message server-side: echoing them to the browser leaks schema and constraint names.
   console.error("waitlist: join_waitlist failed", error.code, error.message);
