@@ -5,6 +5,11 @@ description = "Editrace Python code: the shared template models, the analysis wo
 requires-python = ">=3.11"
 dependencies = ["pydantic>=2"]
 
+# Per-worker dependencies, pinned because detector output can change between releases (ADR 0003).
+# CI installs every extra (`uv sync --all-extras`).
+[project.optional-dependencies]
+cuts = ["scenedetect==0.7.2", "opencv-python==5.0.0.93", "numpy>=2.4"]  # scenedetect requires opencv-python; pin it too, and numpy, which the tests import
+
 # Not an installable package: the folders below are plain top-level packages, imported from the repo root
 # (`from editrace_schema import Template`). CI runs `uv sync`, `ruff`, `pyright` and `pytest` from the root.
 [dependency-groups]
