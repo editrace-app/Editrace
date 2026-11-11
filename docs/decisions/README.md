@@ -23,3 +23,4 @@ To reject an ADR, set `Status: Rejected` with a reason on the PR branch and merg
 | 0001 | [Host the web app on Cloudflare Workers instead of Vercel](0001-host-web-app-on-cloudflare-workers.md) | Rejected |
 | 0002 | [Represent template time as integer frames on one rational timebase, and version the schema with semver](0002-time-representation-and-schema-versioning.md) | Accepted |
 | 0003 | [Detect cuts with PySceneDetect's AdaptiveDetector and flag suspect cuts for review](0003-use-pyscenedetect-adaptive-for-cut-detection.md) | Accepted |
+| 0006 | [Hand detected timelines to DaVinci Resolve as OTIO files with plain media paths (spike #5: go)](0006-rebuild-detected-timelines-in-resolve-via-otio-import.md) | Proposed |
