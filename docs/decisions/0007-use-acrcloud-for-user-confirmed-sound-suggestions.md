@@ -1,4 +1,4 @@
-# 0006: Use ACRCloud for sound suggestions that the owner confirms
+# 0007: Use ACRCloud for sound suggestions that the owner confirms
 
 - **Status:** Proposed
 - **Date:** 2026-11-10
@@ -55,6 +55,16 @@ Propose **one ACRCloud lookup on a centered excerpt of up to 12 seconds**, offer
 Before rollout, two-user tests must prove that only the owner can confirm/dismiss/reverse a candidate, and no unconfirmed candidate reaches `sound_ref` in template reads or exports. Test ignored/dismissed/no-match/outage states, stale confirmations, repeated analysis requests and audio non-persistence. Re-run these checks for MCP when it ships.
 
 At the Sprint 4 partner pilot review (2026-11-25), report suggestions shown, confirmations, dismissals, reversals, lookup failures, latency and cost without logging audio or private content. Any unconfirmed candidate exposed as `sound_ref` blocks rollout. Track confirmed-but-wrong reports separately: confirmation rate is not identification accuracy. Revisit or disable suggestions if partners find them misleading or not useful; numerical adoption targets require partner evidence.
+
+## Explicit review decision: sample deviation
+
+The evaluated set has **20 released tracks, 8 original/remix cases and 2 no-music clips**, rather than the planned ≥10 original/remix cases. The numeric sample criterion is not met. No additional labeled clips are currently available locally.
+
+Code-owner reviewers must explicitly choose in their review:
+- **Accept the 20/8 sample deviation for this provisional, owner-confirmed suggestion contract**, without claiming the original exit or an original-sound accuracy target passed; dataset expansion remains tracked in #358; or
+- **Require the two missing original/remix cases before merge**, followed by a separately reported evaluation without retuning on those cases.
+
+An approval that does not address this question does not resolve the sample deviation. The proposed rationale for accepting it is the limited suggestion-only contract, beat-only fallback and explicit absence of original-sound performance guarantees; these are scope controls, not additional accuracy evidence. The ≤5% wrong-match exit still failed. Reviewer acceptance is pending and is not asserted by this document.
 
 ## Open questions
 
