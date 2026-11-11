@@ -1,0 +1,69 @@
+{
+  "seed": 357,
+  "answer_key_sha256": "4f5c8c2628d78c7a2d47ceec2b51296aa86023a0de135f18493f74131728fa66",
+  "dev": [
+    "s01.mp4",
+    "s02.mp4",
+    "s03.mp4",
+    "s04.mp4",
+    "s09.mp4",
+    "s10.mp4",
+    "s13.mp4",
+    "s16.mp4",
+    "v01.mp4",
+    "v02.mp4",
+    "v03.mp4",
+    "v04.mp4",
+    "v05.mp4",
+    "v08.mp4",
+    "v09.mp4",
+    "v10.mp4",
+    "v11.mp4",
+    "v12.mp4",
+    "v14.mp4",
+    "v15.mp4"
+  ],
+  "heldout": [
+    "s05.mp4",
+    "s06.mp4",
+    "s07.mp4",
+    "s08.mp4",
+    "s11.mp4",
+    "s12.mp4",
+    "s14.mp4",
+    "s15.mp4",
+    "s17.mp4",
+    "v13.mp4"
+  ],
+  "strata_sizes": {
+    "none/nothing": [
+      1,
+      1
+    ],
+    "original/bad": [
+      1,
+      1
+    ],
+    "original/nothing": [
+      1,
+      1
+    ],
+    "original/right": [
+      3,
+      1
+    ],
+    "released/bad": [
+      2,
+      1
+    ],
+    "released/nothing": [
+      1,
+      0
+    ],
+    "released/right": [
+      11,
+      5
+    ]
+  },
+  "note": "strata_sizes: [dev, held-out]. Bucket = #11 ACRCloud-middle outcome: right / bad (wrong or unresolved) / nothing (no match). Shared with #358; do not tune on held-out."
+}
