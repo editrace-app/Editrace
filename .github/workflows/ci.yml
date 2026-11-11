@@ -55,9 +55,10 @@ jobs:
           # Pushes to main always run everything (they record the coverage baseline). If the file list can't be read,
           # run everything.
           # The Supabase job (the longest) runs on a PR only if the PR touches the database, the RLS check or this file.
-          # The golden eval (#344) runs only on PRs that touch a worker, the golden set or this file; never on pushes.
+          # The golden eval (#344) runs on PRs that touch a worker, its dependencies, the golden set or this file. On a
+          # push to main it only refreshes the cached videos, which PRs restore from main.
           code=true
-          [ "$EVENT_NAME" = pull_request ] && golden=true || golden=false
+          golden=true
           if [ "$EVENT_NAME" = pull_request ] && files=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/files" --paginate \
               --jq '.[] | .filename, (.previous_filename // empty)') && [ -n "$files" ]; then
             non_docs=$(printf '%s\n' "$files" | grep -vE '^(docs/.*\.md|[^/]+\.md)$' || true)
@@ -65,13 +66,11 @@ jobs:
             [ -z "$non_docs" ] && [ -z "$schema_doc" ] && code=false
             db_files=$(printf '%s\n' "$files" | grep -E '^(supabase/|\.github/scripts/(test-)?check-rls-tests\.sh$|\.github/workflows/ci\.yml$)' || true)
             [ -n "$db_files" ] || supabase=false
-            golden_files=$(printf '%s\n' "$files" | grep -E '^(workers/|eval/golden/|\.github/workflows/ci\.yml$)' || true)
+            golden_files=$(printf '%s\n' "$files" | grep -E '^(workers/|eval/golden/|pyproject\.toml$|uv\.lock$|\.github/workflows/ci\.yml$)' || true)
             [ -n "$golden_files" ] || golden=false
             echo "Changed files: $(printf '%s\n' "$files" | wc -l); code=$code supabase=$supabase golden=$golden"
           fi
-          echo "code=$code" >> "$GITHUB_OUTPUT"
-          echo "supabase=$supabase" >> "$GITHUB_OUTPUT"
-          echo "golden=$golden" >> "$GITHUB_OUTPUT"
+          { echo "code=$code"; echo "supabase=$supabase"; echo "golden=$golden"; } >> "$GITHUB_OUTPUT"
       # The gitleaks CLI, not gitleaks/gitleaks-action: since the repo moved to the editrace-app organization, the action
       # refuses to run without a paid GITLEAKS_LICENSE. The CLI is the same scanner and needs none. Pinned release with a
       # checksum, like actionlint below, at the version .pre-commit-config.yaml uses; bump them together. It reads the
@@ -328,20 +327,91 @@ jobs:
       - run: supabase test db
       - run: .github/scripts/check-rls-tests.sh
 
-  # Single required check for branch protection: fails if any job failed, ignores skipped ones.
-  # Golden eval on worker changes (#344): scores the PR and main on the golden set's labeled videos (held-out ones
-  # never), on this one runner, and fails below the regression floors in eval/golden/ci_eval.py. The videos are
-  # private and not in the repo; until their storage is set up (#344), the job only lists the videos it will score.
+  # Golden eval on worker changes (#344): runs the workers from the PR and from main on the golden set's labeled
+  # videos (never the held-out ones), on this one runner so decoding differences cancel out, posts the comparison as a
+  # sticky comment and fails below the regression floors in eval/golden/ci_eval.py.
+  # The videos are private: they come from the staging Supabase project's golden-videos bucket, read as a CI user
+  # that can read that bucket and nothing else (supabase/migrations/*_create_golden_videos_bucket.sql; setup in
+  # docs/environments.md). Logs and the comment carry video ids and numbers, never a URL or path.
   golden-eval:
     needs: detect
     if: needs.detect.outputs.golden == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      pull-requests: write # the sticky golden-eval comment (a fork PR's read-only token only gets a warning)
+    env:
+      VIDEOS: ${{ github.workspace }}/../golden-videos
     steps:
       - uses: actions/checkout@v6
-      - name: Videos to score (labeled, not held out)
-        run: python3 eval/golden/ci_eval.py plan
+        with:
+          fetch-depth: 2 # a PR's merge commit and its first parent, main's tip: the base it's compared with
+      # Keyed by the manifest, restoring the newest older cache: storage.py then downloads only what changed. Caches
+      # from main are visible to every PR, which is why pushes to main run this job too.
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.VIDEOS }}
+          key: golden-videos-${{ hashFiles('eval/golden/manifest.json') }}
+          restore-keys: golden-videos-
+      - name: Fetch the golden videos
+        env:
+          SUPABASE_URL: ${{ secrets.GOLDEN_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.GOLDEN_SUPABASE_ANON_KEY }}
+          GOLDEN_CI_EMAIL: ${{ secrets.GOLDEN_CI_EMAIL }}
+          GOLDEN_CI_PASSWORD: ${{ secrets.GOLDEN_CI_PASSWORD }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ -z "$GOLDEN_CI_PASSWORD" ]; then
+            msg="The GOLDEN_* secrets aren't set (or this PR comes from a fork), so the golden videos can't be fetched. See docs/environments.md."
+            # A push to main only warms the cache: never turn main red over it.
+            [ "$EVENT_NAME" = push ] && { echo "::warning::$msg"; exit 0; }
+            echo "::error::$msg"; exit 1
+          fi
+          python3 eval/golden/storage.py fetch "$VIDEOS"
+      - uses: astral-sh/setup-uv@v6
+        if: github.event_name == 'pull_request'
+      - name: Run the workers from the PR
+        if: github.event_name == 'pull_request'
+        run: |
+          uv sync --all-extras
+          uv run python eval/golden/ci_eval.py predict "$VIDEOS" "$RUNNER_TEMP/pred-head"
+      # main's own checkout and dependencies, so a PR that bumps a pinned library is compared with the old pin.
+      - name: Run the workers from main
+        if: github.event_name == 'pull_request'
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/base" HEAD^1
+          (cd "$RUNNER_TEMP/base" && uv sync --all-extras)
+          "$RUNNER_TEMP/base/.venv/bin/python" eval/golden/ci_eval.py predict "$VIDEOS" "$RUNNER_TEMP/pred-base"             --root "$RUNNER_TEMP/base"
+      - name: Score and compare
+        id: report
+        if: github.event_name == 'pull_request'
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set +e
+          python3 eval/golden/ci_eval.py report "$RUNNER_TEMP/pred-head" --base "$RUNNER_TEMP/pred-base"             --head-sha "${HEAD_SHA::7}" --base-sha "$(git rev-parse --short HEAD^1)" --out "$RUNNER_TEMP/golden.md"
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          [ -s "$RUNNER_TEMP/golden.md" ] || exit 1
+          cat "$RUNNER_TEMP/golden.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Post the sticky comment
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          MARKER: "<!-- editrace-golden-eval -->"
+          COMMENT_FILE: ${{ runner.temp }}/comment.md
+        run: |
+          { echo "$MARKER"; cat "$RUNNER_TEMP/golden.md"; } > "$COMMENT_FILE"
+          .github/scripts/coverage-comment.sh
+      - name: Fail below a floor
+        if: github.event_name == 'pull_request' && steps.report.outputs.status != '0'
+        run: |
+          echo "::error::The golden eval is below a regression floor; see the Golden eval comment."
+          exit 1
 
+  # Single required check for branch protection: fails if any job failed, ignores skipped ones.
   ci-ok:
     # A draft PR has no CI (see detect), so no ci-ok either; marking it ready runs everything.
     if: always() && (github.event_name != 'pull_request' || !github.event.pull_request.draft || startsWith(github.head_ref, 'armour-eval/'))

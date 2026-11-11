@@ -112,6 +112,10 @@ Make a timeline at the video's fps starting at `01:00:00:00` and put **timeline 
 
 - **`held_out`**: `true` for the 10 test-set videos of milestone 3 (#52), which nobody tunes on: CI's golden eval skips them (`ci_eval.py`), and they're scored only at the end of Phase 1. Leave it out for every other video. Only a labeled video can be held out, and none of v01–v15 can be, since they've all been used for tuning.
 
+## Storing a video for CI
+
+CI's golden eval (#344) downloads the videos it scores from the staging Supabase project, not from anyone's machine. When a video is newly labeled (and not held out), whoever has the file uploads it: `SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... python eval/golden/storage.py upload` (staging's values; [docs/environments.md](../../docs/environments.md#golden-videos-for-ci)). Until then the golden-eval check fails on worker PRs, since it scores all labeled videos or none. Only videos with rights `full` can be stored; held-out ones never are. If a video leaves the golden set, delete its object (`sha256/<hash>.mp4`) from the bucket by hand.
+
 ## After the detectors run
 
 Review every disagreement between labels and detectors. If a label was wrong, fix it, and report how many labels changed alongside the results. Never change a label silently to match a detector.

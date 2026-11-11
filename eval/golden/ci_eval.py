@@ -10,6 +10,10 @@ the PR passes the regression floors.
 Usage:
   python eval/golden/ci_eval.py plan
       the ids to run the workers on, one per line
+  python eval/golden/ci_eval.py predict VIDEOS_DIR OUT_DIR [--root CHECKOUT] [--worker module:Class]
+      runs the worker from CHECKOUT (default: this one) on VIDEOS_DIR/<id>.mp4 for each scored video, through the
+      worker base's normal run, and writes OUT_DIR/<id>.json. CI runs it once on the PR and once on the merge base,
+      each with its own checkout and dependencies, so a dependency bump shows up in the comparison too.
   python eval/golden/ci_eval.py report HEAD_DIR [--base BASE_DIR] [--head-sha SHA] [--base-sha SHA] [--out REPORT.md]
       HEAD_DIR and BASE_DIR hold one predicted template per video (`v01.json`, ...), from the PR and from `main`.
       Prints the Markdown report and exits 1 if the PR is below a floor.
@@ -20,7 +24,10 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import tempfile
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import score
 
@@ -33,6 +40,7 @@ FLOORS = {"cuts": {"precision": 0.75, "recall": 0.90}}
 # but it was tuned on them (0.932 when each is held out), so enforce it once held-out videos confirm it (#311).
 TARGETS = {"cuts": {"recall": 0.95}}
 WORST = 3  # videos listed under "worst regressions"
+WORKER = "workers.cuts.worker:CutsWorker"
 
 
 def evaluated_videos(manifest: dict) -> list[dict]:
@@ -42,6 +50,43 @@ def evaluated_videos(manifest: dict) -> list[dict]:
         for v in manifest["videos"]
         if v.get("labeled") is True and v.get("held_out") is not True
     ]
+
+
+def predict(
+    run: Callable[[str, Path, dict], dict[str, Any]],
+    videos: list[dict],
+    videos_dir: Path,
+    out: Path,
+    labels: Path | None = None,
+) -> None:
+    """One predicted template per video: the label's `source` section plus what `run(id, video, source)` detects.
+    Using the label's source means the worker checks the file against the label's content hash and frame count."""
+    labels = labels or ROOT / "labels"
+    out.mkdir(parents=True, exist_ok=True)
+    for video in videos:
+        vid = video["id"]
+        source = json.loads((labels / f"{vid}.json").read_text())["source"]
+        partial = run(vid, videos_dir / f"{vid}.mp4", source)
+        (out / f"{vid}.json").write_text(json.dumps({"source": source, **partial}))
+        print(f"{vid}: predicted", file=sys.stderr)
+
+
+def worker_runner(
+    root: Path, spec: str, cache: Path
+) -> Callable[[str, Path, dict], dict[str, Any]]:
+    """Runs `spec` as it is in the checkout at `root`: its `workers` package is imported from there, not from here."""
+    sys.path.insert(0, str(root.resolve()))
+    from workers.base import Job
+    from workers.cache import FileResultStore
+    from workers.run import load_worker_class
+    from workers.storage import LocalFetcher
+
+    worker = load_worker_class(spec)(FileResultStore(cache), LocalFetcher())
+
+    def run(vid: str, video: Path, source: dict) -> dict[str, Any]:
+        return dict(worker.run(Job(vid, str(video), source)).partial)
+
+    return run
 
 
 def score_predictions(
@@ -139,6 +184,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Golden eval for CI (#344)")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("plan", help="print the ids CI scores")
+    pred = sub.add_parser("predict", help="run a worker on the scored videos")
+    pred.add_argument("videos", type=Path)
+    pred.add_argument("out", type=Path)
+    pred.add_argument("--root", type=Path, default=ROOT.parents[1])
+    pred.add_argument("--worker", default=WORKER)
     report = sub.add_parser("report", help="score and compare predictions")
     report.add_argument("head", type=Path)
     report.add_argument("--base", type=Path)
@@ -150,6 +200,16 @@ def main() -> None:
     videos = evaluated_videos(json.loads((ROOT / "manifest.json").read_text()))
     if args.command == "plan":
         print("\n".join(v["id"] for v in videos))
+        return
+    if args.command == "predict":
+        # A fresh result cache: CI compares two checkouts, and a cached result could hide a change in either.
+        with tempfile.TemporaryDirectory() as cache:
+            predict(
+                worker_runner(args.root, args.worker, Path(cache)),
+                videos,
+                args.videos,
+                args.out,
+            )
         return
     head = score_predictions(args.head, videos)
     base = score_predictions(args.base, videos) if args.base else None

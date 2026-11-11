@@ -3,6 +3,7 @@ small fake golden set, so no videos are needed."""
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -143,3 +144,87 @@ def test_a_missing_or_mismatched_prediction_stops_the_run(
     )
     with pytest.raises(SystemExit, match="different video"):
         ci_eval.score_predictions(other, [{"id": "v01"}])
+
+
+def test_predict_runs_the_worker_through_its_base_and_keeps_the_labels_source(
+    tmp_path: Path,
+) -> None:
+    """The reference worker on a stand-in file: predict hands it the label's source, so the base checks the file
+    against the label's content hash, and the prediction scores against that label."""
+    videos = tmp_path / "videos"
+    videos.mkdir()
+    (videos / "v01.mp4").write_bytes(b"not really a video")
+    source = {
+        "duration": 90,
+        "fps": {"num": 30, "den": 1},
+        "resolution": {"width": 720, "height": 1280},
+        "aspect_ratio": {"num": 9, "den": 16},
+        "content_hash": "sha256:" + hashlib.sha256(b"not really a video").hexdigest(),
+    }
+    labels = tmp_path / "labels"
+    labels.mkdir()
+    (labels / "v01.json").write_text(json.dumps({"source": source}))
+    run = ci_eval.worker_runner(
+        Path(ci_eval.__file__).parents[2],
+        "workers.reference:ReferenceWorker",
+        tmp_path / "cache",
+    )
+    ci_eval.predict(run, [{"id": "v01"}], videos, tmp_path / "out", labels)
+    predicted = json.loads((tmp_path / "out" / "v01.json").read_text())
+    assert predicted["source"] == source
+    assert [c["frame"] for c in predicted["tracks"][0]["cuts"]] == [30, 60]
+
+    # A file that isn't the labeled one is refused, not scored.
+    (videos / "v01.mp4").write_bytes(b"another file")
+    with pytest.raises(ValueError, match="hashes to"):
+        ci_eval.predict(
+            ci_eval.worker_runner(
+                Path(ci_eval.__file__).parents[2],
+                "workers.reference:ReferenceWorker",
+                tmp_path / "c2",
+            ),
+            [{"id": "v01"}],
+            videos,
+            tmp_path / "out2",
+            labels,
+        )
+
+
+def test_predict_from_the_command_line(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    golden = tmp_path / "golden"
+    (golden / "labels").mkdir(parents=True)
+    data = b"stand-in video"
+    source = {
+        "duration": 60,
+        "fps": {"num": 30, "den": 1},
+        "resolution": {"width": 720, "height": 1280},
+        "aspect_ratio": {"num": 9, "den": 16},
+        "content_hash": "sha256:" + hashlib.sha256(data).hexdigest(),
+    }
+    (golden / "manifest.json").write_text(
+        json.dumps({"videos": [{"id": "v01", "labeled": True}]})
+    )
+    (golden / "labels" / "v01.json").write_text(json.dumps({"source": source}))
+    videos = tmp_path / "videos"
+    videos.mkdir()
+    (videos / "v01.mp4").write_bytes(data)
+    monkeypatch.setattr(ci_eval, "ROOT", golden)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "ci_eval.py",
+            "predict",
+            str(videos),
+            str(tmp_path / "out"),
+            "--root",
+            str(Path(ci_eval.__file__).parents[2]),
+            "--worker",
+            "workers.reference:ReferenceWorker",
+        ],
+    )
+    ci_eval.main()
+    predicted = json.loads((tmp_path / "out" / "v01.json").read_text())
+    assert [c["frame"] for c in predicted["tracks"][0]["cuts"]] == [30]
