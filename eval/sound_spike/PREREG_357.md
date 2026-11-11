@@ -75,6 +75,14 @@ already contain two 2004s, which were scored as no match. From here on, 2004 cou
 stop the run. The stop rule still applies to every other code. The arms, budget, policies and selection rule
 are unchanged, and no responses had been scored.
 
+## Amendment 2 (2026-11-11, quota exhausted, before any held-out scoring)
+After 115 usable new lookups, ACRCloud returned `3003 requests limit exceeded, please upgrade your account`.
+The preprocessing arms are complete on 20 clips (s01–s17, v01–v03). They are missing on v04, v05 and v08–v15
+(9 dev clips and 1 held-out). Speed retries finished on 3 of the 5 no-match clips. As pre-registered, the
+unfinished arms are **untested**. The selection rule runs on the selection rules whose lookups exist for every
+dev clip: single start, single middle, middle→start fallback and start+middle agreement, each with every
+filter (192 policies). `tune.py` drops 3003 and HTTP-error rows, so they are not scored as no-match.
+
 ## Known limits
 - Tiny sample: the held-out set has 10 clips, 2 of them baseline-wrong.
 - 576 policies are compared on 20 dev clips, so the dev winner's numbers are optimistic. The held-out run is

@@ -207,8 +207,8 @@ def lookups_by_clip() -> dict[str, dict[str, dict]]:
     for (clip, excerpt_name), r in saved().items():
         out.setdefault(clip, {})[excerpt_name] = {"cands": candidates(r["raw"]), "latency": r["latency_s"], "prep": 0.0}
     for r in read_log():
-        if "http_error" in r["raw"]:
-            continue
+        if (r["raw"].get("status") or {}).get("code") not in (0, 1001, 2004):
+            continue  # HTTP errors and account errors (3003 quota) are not lookups
         out.setdefault(r["clip"], {})[r["arm"]] = {"cands": candidates(r["raw"]), "latency": r["latency_s"],
                                                     "prep": r["prep_s"]}
     return out
@@ -341,12 +341,21 @@ def rank_key(m: dict) -> tuple:
     return (-m["released_right"], m["lookups"], m["policy"].count(" +") + (" tau0" not in m["policy"]), m["policy"])
 
 
+def complete(selection: str, clips: list[str], data: dict) -> bool:
+    """Every clip has the lookups this selection rule needs (the quota ran out partway, see amendment 2)."""
+    try:
+        for clip in clips:
+            select(selection, data[clip])
+    except KeyError:
+        return False
+    return True
+
+
 def dev() -> None:
     ans, data, s = answers(), lookups_by_clip(), json.loads(SPLIT.read_text())
-    missing = [(c, a) for c in s["dev"] for a in ("start", "middle", *POSITION_ARMS, STEM_ARM) if a not in data[c]]
-    if missing:
-        sys.exit(f"missing lookups on dev: {missing[:5]}…")
-    results = [evaluate(p, s["dev"], ans, data) for p in policies()]
+    usable = [sel for sel in SELECTIONS if complete(sel, s["dev"], data)]
+    print(f"selection rules with complete dev lookups: {usable}\nuntested: {[x for x in SELECTIONS if x not in usable]}\n")
+    results = [evaluate(p, s["dev"], ans, data) for p in policies() if p["selection"] in usable]
     by_name = {m["policy"]: m for m in results}
     eligible = sorted((m for m in results if m["eligible"]), key=rank_key)
     with (run.RESULTS / "t357_dev_grid.csv").open("w", newline="") as f:
@@ -356,7 +365,7 @@ def dev() -> None:
     print(f"dev: {len(s['dev'])} clips, {len(results)} policies, {len(eligible)} eligible (wrong per shown <= 5%)\n")
     print(HEADER)
     print(row(by_name[policy_name(BASELINE)]))
-    for sel in SELECTIONS:  # best eligible per selection rule, else that rule's unfiltered row
+    for sel in usable:  # best eligible per selection rule, else that rule's unfiltered row
         best = next((m for m in eligible if m["policy"].startswith(sel + " ")), None)
         print(row(best or by_name[policy_name({"selection": sel, "tau": 0, "filters": []})]) + ("" if best else " (none eligible)"))
     for tau in TAUS[1:]:
@@ -365,6 +374,9 @@ def dev() -> None:
         print(row(by_name[policy_name({**BASELINE, "filters": [f]})]))
     chosen = eligible[0] if eligible else by_name[policy_name(BASELINE)]
     policy = next(p for p in policies() if policy_name(p) == chosen["policy"])
+    if "--no-write" in sys.argv:
+        print(f"\nwould select: {chosen['policy']}" + ("" if eligible else " (none eligible: baseline)"))
+        return
     POLICY.write_text(json.dumps({"policy": policy, "name": chosen["policy"], "selected_on": "dev",
                                   "eligible": bool(eligible), "dev": chosen}, indent=2) + "\n")
     print(f"\nselected: {chosen['policy']}" + ("" if eligible else " (no policy eligible: baseline retained)"))
@@ -395,6 +407,7 @@ def main() -> None:
     parser.add_argument("--ffmpeg", default="ffmpeg")
     parser.add_argument("--stem-python", default=sys.executable)
     parser.add_argument("--report-again", action="store_true", help="heldout: reprint the one scored result")
+    parser.add_argument("--no-write", action="store_true", help="dev: print the selection without writing policy.json")
     args = parser.parse_args()
     if args.command == "split":
         split()
