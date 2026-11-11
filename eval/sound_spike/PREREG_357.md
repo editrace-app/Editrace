@@ -68,6 +68,13 @@ committed (`policy.json`) before the single held-out run.
 - cost per analysis at $6 per 1k valid queries, where a no-result counts as half
 - latency: the sum of lookup and preprocessing time; stem time includes loading the Demucs model per excerpt
 
+## Amendment 1 (2026-11-11, mid-lookup, before any scoring)
+The harness stopped after 86 lookups because `s17` p25 returned `2004 Can't generate fingerprint`. That code
+means the excerpt couldn't be fingerprinted, not that the account or quota failed. #11's saved responses
+already contain two 2004s, which were scored as no match. From here on, 2004 counts as a no match and doesn't
+stop the run. The stop rule still applies to every other code. The arms, budget, policies and selection rule
+are unchanged, and no responses had been scored.
+
 ## Known limits
 - Tiny sample: the held-out set has 10 clips, 2 of them baseline-wrong.
 - 576 policies are compared on 20 dev clips, so the dev winner's numbers are optimistic. The held-out run is

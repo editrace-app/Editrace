@@ -177,7 +177,7 @@ def lookup(ffmpeg: str, stem_python: str) -> None:
             code = (response.get("status") or {}).get("code", response.get("http_error"))
             print(f"{clip:<8} {arm:<10} prep {prep:5.2f}s  lookup {latency:5.2f}s  "
                   f"{'match' if summary['match'] else f'no match ({code})'}")
-            if code not in (0, 1001):
+            if code not in (0, 1001, 2004):  # 2004: excerpt can't be fingerprinted -> no match (as in #11)
                 print(f"stopping on vendor status {code}: {response.get('status') or response}")
                 return
 
