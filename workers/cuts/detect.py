@@ -161,7 +161,7 @@ def confidence(score: float) -> float:
     them).
 
     It measures how strongly a cut stands out, not whether it's real: on the golden set, split-screen false cuts score
-    up to 27 and a picture-in-picture one 77, while some real cuts score under 2. So it can't be the flag on its own (ADR 0003);
+    up to 27 while some real cuts score under 2. So it can't be the flag on its own (ADR 0003);
     a flag rule has to decide that, and `to_partial()` combines the two.
     """
     if math.isnan(score) or score <= 0:
