@@ -26,6 +26,9 @@ def test_label_is_a_valid_template_matching_the_manifest(video: dict) -> None:
     cuts = [c["frame"] for c in label["tracks"][0]["cuts"]]
     assert all(0 < f < video["frames"] for f in cuts)
     assert len(cuts) == len(set(cuts))
+    # held_out (#52): the test set nobody tunes on; CI skips it (ci_eval.py). Only labeled videos can be held out.
+    assert isinstance(video.get("held_out", False), bool)
+    assert not video.get("held_out") or video.get("labeled") is True
     for r in video.get("exclude", []):
         assert 0 <= r["start"] and r["duration"] > 0
         assert r["start"] + r["duration"] <= video["frames"]

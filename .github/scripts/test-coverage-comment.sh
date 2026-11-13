@@ -46,4 +46,14 @@ check "a failed write is a warning, not a failed gate" $?
 run FAKE_LIST_FAIL=1; [ "$?" -eq 0 ] && [ ! -s "$FAKE_LOG" ] && grep -q "::warning::" "$tmp/out"; check "a failed listing posts nothing (no duplicate) and never fails the gate" $?
 printf 'no marker\n' > "$tmp/bad.md"; COMMENT_FILE="$tmp/bad.md" run; [ "$?" -eq 2 ]
 check "a comment without the marker is refused" $?
+G='<!-- editrace-golden-eval -->'
+printf '%s
+### Golden eval
+' "$G" > "$tmp/g.md"
+jq -s . <<<"$(cm 11 'github-actions[bot]' "$M
+coverage")$(printf '
+')$(cm 12 'github-actions[bot]' "$G
+old eval")" > "$FAKE_COMMENTS"; COMMENT_FILE="$tmp/g.md" run MARKER="$G"
+[ "$?" -eq 0 ] && grep -q 'comments/12' "$FAKE_LOG" && ! grep -q 'comments/11' "$FAKE_LOG"
+check "MARKER picks another sticky comment (the golden eval's) and leaves the coverage one alone" $?
 exit $fail

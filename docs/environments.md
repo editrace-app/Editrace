@@ -70,6 +70,18 @@ The web app's sign-in (#15) needs these in the Supabase dashboard of **each** ho
 - **Authentication → Sign In / Providers → Email:** minimum password length 8, to match the app's own check.
 - **Google:** turn the provider on with a Google OAuth client ID and secret, and add Supabase's callback URL to that Google client's authorised redirect URIs. Keep the Google client secret in Supabase only, never in this repo or Vercel.
 
+## Golden videos for CI
+
+CI's golden eval (#344) scores worker PRs on the golden videos, which are private and never committed (#52). They're kept in the `golden-videos` bucket on the **staging** Supabase project, named by content hash. CI reads them as a dedicated CI user that can read that bucket and nothing else: the bucket's read policy checks `app_metadata.golden_eval = 'read'`, which only the service role can set (`supabase/migrations/*_create_golden_videos_bucket.sql`). So the staging service-role key never goes into CI, and a leaked CI password exposes these videos only.
+
+One-time setup, from a machine with the videos, once the migration is on staging (it lands with the PR's merge). The service-role key stays in your shell for these two commands only:
+
+1. `SUPABASE_URL=<staging URL> SUPABASE_SERVICE_ROLE_KEY=<staging service-role key> python eval/golden/storage.py create-ci-user --email <address>`. It prints the user's password once.
+2. Same variables, `python eval/golden/storage.py upload`. It uploads every video CI scores and lists any not on your machine; upload those from a machine that has them.
+3. Add the four repo secrets below.
+
+A PR without them fails the golden-eval job with a message pointing here; a push to `main` only warns. Each new labeled video needs step 2 again (eval/golden/LABELING.md).
+
 ## Where each secret lives
 
 Each secret lives in **one** place. Don't copy values between systems except through the deploy workflow.
@@ -84,6 +96,7 @@ Each secret lives in **one** place. Don't copy values between systems except thr
 | `STAGING_ALIAS` | GitHub repo variable | `deploy.yml` (staging host shown on the environment and in the commit status) |
 | `CLAUDE_CODE_OAUTH_TOKEN` | GitHub repo secret | Armour review and `@claude` |
 | `DISCORD_REVIEW_WEBHOOK` | GitHub repo secret | Discord review notifications |
+| `GOLDEN_SUPABASE_URL`, `GOLDEN_SUPABASE_ANON_KEY`, `GOLDEN_CI_EMAIL`, `GOLDEN_CI_PASSWORD` | GitHub repo secrets: staging's URL and anon key, and the read-only CI user ([Golden videos for CI](#golden-videos-for-ci)) | `ci.yml` golden-eval job |
 | `DISCORD_ALERTS_WEBHOOK` | GitHub repo secret | Spend and error alerts in `#alerts` ([observability.md](observability.md#spend-alerts)) |
 | `NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SERVICE_ROLE_KEY` | Vercel project env vars, per environment | Web app |
 | `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET` | GitHub repo secrets (deploys) and Modal (runtime) | Workers |
