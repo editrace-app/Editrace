@@ -88,7 +88,7 @@ def _default_open(request: urllib.request.Request) -> IO[bytes]:
 class Client:
     """The few Supabase Auth and Storage calls this needs, over HTTPS."""
 
-    def __init__(self, url: str, apikey: str, opener: Opener = _default_open) -> None:
+    def __init__(self, url: str, apikey: str, opener: Opener | None = None) -> None:
         if not url.startswith("https://") and not url.startswith("http://127.0.0.1"):
             raise StorageError("SUPABASE_URL must be an https URL")
         self.url = url.rstrip("/")
@@ -96,7 +96,7 @@ class Client:
         self.token = (
             apikey  # the service-role key, or a user's access token after sign_in()
         )
-        self.opener = opener
+        self.opener = opener or _default_open
 
     def _call(
         self,

@@ -175,3 +175,100 @@ def test_the_ci_user_gets_read_access_through_app_metadata() -> None:
         body["app_metadata"] == {"golden_eval": "read"}
         and body["email_confirm"] is True
     )
+
+
+def cli_golden_set(root: Path, videos: dict[str, bytes]) -> None:
+    """A golden set at `root` whose manifest lists `videos` (id → bytes), all labeled with full rights."""
+    (root / "videos").mkdir(parents=True)
+    manifest = {
+        "videos": [
+            {"id": vid, "labeled": True, "rights": "full", "content_hash": sha(data)}
+            for vid, data in videos.items()
+        ]
+    }
+    (root / "manifest.json").write_text(json.dumps(manifest))
+
+
+def test_cli_fetch_signs_in_as_the_ci_user(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    v1 = b"video one"
+    cli_golden_set(tmp_path / "golden", {"v01": v1})
+    server = FakeSupabase({storage.object_key(sha(v1)): v1})
+    monkeypatch.setattr(storage, "ROOT", tmp_path / "golden")
+    monkeypatch.setattr(storage, "_default_open", server)
+    for name, value in {
+        "SUPABASE_URL": URL,
+        "SUPABASE_ANON_KEY": KEY,
+        "GOLDEN_CI_EMAIL": "ci@example.test",
+        "GOLDEN_CI_PASSWORD": "pw",
+    }.items():
+        monkeypatch.setenv(name, value)
+    assert storage.main(["fetch", str(tmp_path / "dest")]) == 0
+    assert (tmp_path / "dest" / "v01.mp4").read_bytes() == v1
+    assert capsys.readouterr().out == "v01: downloaded\n"
+
+
+def test_cli_fetch_without_secrets_says_which_is_missing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    cli_golden_set(tmp_path / "golden", {"v01": b"x"})
+    monkeypatch.setattr(storage, "ROOT", tmp_path / "golden")
+    for name in (
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY",
+        "GOLDEN_CI_EMAIL",
+        "GOLDEN_CI_PASSWORD",
+    ):
+        monkeypatch.delenv(name, raising=False)
+    with pytest.raises(SystemExit, match="SUPABASE_URL isn't set"):
+        storage.main(["fetch", str(tmp_path / "dest")])
+
+
+def test_cli_errors_are_one_line_without_secrets(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    cli_golden_set(tmp_path / "golden", {"v01": b"x"})
+    monkeypatch.setattr(storage, "ROOT", tmp_path / "golden")
+    monkeypatch.setattr(storage, "_default_open", FakeSupabase(fail=401))
+    monkeypatch.setenv("SUPABASE_URL", URL)
+    monkeypatch.setenv("SUPABASE_ANON_KEY", KEY)
+    monkeypatch.setenv("GOLDEN_CI_EMAIL", "ci@example.test")
+    monkeypatch.setenv("GOLDEN_CI_PASSWORD", "the-password")
+    assert storage.main(["fetch", str(tmp_path / "dest")]) == 1
+    err = capsys.readouterr().err
+    assert err == "error: sign in as the CI user: HTTP 401\n"
+
+
+def test_cli_create_ci_user_prints_the_password_once(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    cli_golden_set(tmp_path / "golden", {"v01": b"x"})
+    server = FakeSupabase()
+    monkeypatch.setattr(storage, "ROOT", tmp_path / "golden")
+    monkeypatch.setattr(storage, "_default_open", server)
+    monkeypatch.setenv("SUPABASE_URL", URL)
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "service-key")
+    assert storage.main(["create-ci-user", "--email", "ci@example.test"]) == 0
+    password = capsys.readouterr().out.splitlines()[-1]
+    assert json.loads(server.requests[0].data)["password"] == password  # type: ignore[arg-type]
+    assert len(password) >= 40
+
+
+def test_cli_upload_fails_when_a_video_isnt_on_this_machine(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    golden = tmp_path / "golden"
+    cli_golden_set(golden, {"v01": b"one", "v11": b"eleven"})
+    (golden / "videos" / "v01.mp4").write_bytes(b"one")
+    server = FakeSupabase()
+    monkeypatch.setattr(storage, "ROOT", golden)
+    monkeypatch.setattr(storage, "_default_open", server)
+    monkeypatch.setenv("SUPABASE_URL", URL)
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "service-key")
+    assert storage.main(["upload"]) == 1
+    assert "Not on this machine, so not uploaded: v11" in capsys.readouterr().err
+    assert list(server.objects) == [storage.object_key(sha(b"one"))]
+    # With every video present, it succeeds.
+    (golden / "videos" / "v11.mp4").write_bytes(b"eleven")
+    assert storage.main(["upload"]) == 0
